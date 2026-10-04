@@ -12,8 +12,22 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--mono);
-    line-height:1.5;background-image:radial-gradient(#11202b 1px,transparent 1px);
-    background-size:22px 22px;}
+    line-height:1.5;background-color:#05080d;
+    background-image:
+      radial-gradient(1px 1px at 20px 30px,#fff,transparent),
+      radial-gradient(1px 1px at 120px 80px,#9bd,transparent),
+      radial-gradient(1.5px 1.5px at 200px 160px,#fff,transparent),
+      radial-gradient(1px 1px at 300px 40px,#cdf,transparent),
+      radial-gradient(1px 1px at 380px 220px,#fff,transparent),
+      radial-gradient(1.5px 1.5px at 60px 260px,#bcd,transparent),
+      radial-gradient(1px 1px at 260px 300px,#fff,transparent),
+      radial-gradient(ellipse at 80% -10%,rgba(40,90,160,.35),transparent 55%),
+      radial-gradient(ellipse at -10% 110%,rgba(60,40,120,.3),transparent 50%);
+    background-size:400px 340px,400px 340px,400px 340px,400px 340px,400px 340px,400px 340px,400px 340px,100% 100%,100% 100%;
+    background-attachment:fixed;}
+  .motto{font-size:11px;color:var(--dim);letter-spacing:3px;display:block;margin-top:2px}
+  .ussf{border-left:3px solid #4aa3ff;background:rgba(20,40,70,.45)}
+  .ussf h3{color:#8cc8ff;margin-top:0}
   header{border-bottom:1px solid var(--line);padding:14px 18px;display:flex;
     flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
     background:linear-gradient(180deg,#0c141c,#0a0e12);position:sticky;top:0;z-index:20}
@@ -71,7 +85,7 @@
 </head>
 <body>
 <header>
-  <div class="brand">i5 <span>//</span> ADVERSARY&nbsp;HUNT</div>
+  <div class="brand">&#9733; i5 SPACE GROUP <span>//</span> ADVERSARY&nbsp;HUNT<span class="motto">SEMPER SUPRA &middot; ALWAYS ABOVE</span></div>
   <div class="status">
     <span class="pill">OP: SILENT LEDGER</span>
     <span class="timer" id="timer">00:00</span>
@@ -94,6 +108,7 @@
 <!-- ================= BRIEFING ================= -->
 <section class="page active" id="brief">
   <h1>MISSION BRIEFING</h1>
+  <p class="muted">Space is a warfighting domain now. Everything we do on the ground, from GPS to comms to missile warning, runs through it. Today you get to work like a Space Force task force does.</p>
   <div class="card">
     <p><span class="accent">CLASSIFICATION:</span> TRAINING // FICTIONAL // i5 ONLY</p>
     <p>Alright Guardians. There's a made up hacker group called <span class="accent">SABLE&nbsp;BEAR</span>
@@ -161,6 +176,12 @@
     <div class="hint" id="intel-hint">Look at the "known for" column and match it to what the image says.
     The hemisphere in the image gets added to your piece automatically.</div>
   </div>
+  <div class="card ussf">
+    <h3>IN THE SPACE FORCE</h3>
+    <p>14N Intel officers figure out who the threat is and what they're about to do. They study foreign
+    space and cyber programs, read imagery, and brief commanders so the right call gets made. A lot of
+    them work in Mission Delta 7, the Space Force's ISR delta.</p>
+  </div>
 </section>
 
 <!-- ================= 17S CYBER ================= -->
@@ -184,6 +205,12 @@
     <div class="result" id="cyber-res"></div>
     <div class="hint" id="cyber-hint">Read the readme first. You'll need to open the capture file,
     then run the two decode commands in the right order.</div>
+  </div>
+  <div class="card ussf">
+    <h3>IN THE SPACE FORCE</h3>
+    <p>17S Cyber officers defend the networks and ground stations that talk to our satellites. If someone
+    hacks the ground, they own the satellite, so these crews are on the front line. Mission Delta 6 runs
+    Space Force cyberspace operations.</p>
   </div>
 </section>
 
@@ -218,6 +245,12 @@
     <div class="hint" id="eng-hint">An AND gate only outputs 1 when both inputs are 1.
     For the colors, the brown band is the last one.</div>
   </div>
+  <div class="card ussf">
+    <h3>IN THE SPACE FORCE</h3>
+    <p>62E Engineers design, test and fix the hardware that goes to space and the systems that run it.
+    Electrical, astro, computer, you name it. A lot of them work at Space Systems Command building the
+    next generation of satellites.</p>
+  </div>
 </section>
 
 <!-- ================= 13S SPACE ================= -->
@@ -248,6 +281,12 @@
     <div class="hint" id="space-hint">The numbers have to match exactly. Also think about
     which country the 14N desk said the group is from.</div>
   </div>
+  <div class="card ussf">
+    <h3>IN THE SPACE FORCE</h3>
+    <p>13S Space Operators are the core of the Space Force. They fly satellites, track everything in orbit,
+    watch for missile launches, and keep GPS and comms up for the whole joint force. If a pilot or a ship
+    knows where it is, thank a 13S.</p>
+  </div>
 </section>
 
 <!-- ================= 63A ACQ ================= -->
@@ -273,6 +312,12 @@
     <div class="hint" id="acq-hint">It's a yellowish orange gem made from old tree resin.
     The Baltic area is famous for it.</div>
   </div>
+  <div class="card ussf">
+    <h3>IN THE SPACE FORCE</h3>
+    <p>63A Acquisitions officers are the reason Guardians have gear at all. They run the programs that buy
+    satellites, rockets and ground systems, and they watch the supply chain for exactly this kind of
+    shady front company.</p>
+  </div>
 </section>
 
 <!-- ================= FUSION ================= -->
@@ -296,12 +341,12 @@
     <h2 style="color:var(--accent)">YOU FOUND THEM</h2>
     <p>SABLE BEAR is operating out of <b class="accent">KALININGRAD, RUSSIA (54.71N, 20.51E)</b>.
     It's a small piece of Russia between Poland and Lithuania, which makes sense for a "Bear" group.
-    Good work everyone.</p>
+    Good work everyone. This is exactly how a real task force works: intel, cyber, engineering, space ops and acquisitions all bringing one piece, and nobody solving it alone.</p>
     <p class="muted">Hang tight, we're going to talk through it as a group.</p>
   </div>
 </section>
 
-<div class="foot">i5 Space Group training exercise. The group and companies in here are made up.</div>
+<div class="foot">&#9733; Want to do this for real? Ask the det about Space Force career fields. &#9733;<br>i5 Space Group training exercise. The group and companies in here are made up. Not an official USSF product.</div>
 </main>
 
 <script>
