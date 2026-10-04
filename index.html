@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>i5 // ADVERSARY HUNT</title>
+<style>
+  :root{
+    --bg:#0a0e12; --panel:#0f1620; --panel2:#0c121a; --line:#1d2a36;
+    --txt:#c6d0d8; --dim:#6b7d8c; --accent:#9fef00; --accent2:#00e5a0;
+    --warn:#ff5c5c; --mono:'Courier New',ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--mono);
+    line-height:1.5;background-image:radial-gradient(#11202b 1px,transparent 1px);
+    background-size:22px 22px;}
+  header{border-bottom:1px solid var(--line);padding:14px 18px;display:flex;
+    flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+    background:linear-gradient(180deg,#0c141c,#0a0e12);position:sticky;top:0;z-index:20}
+  .brand{font-weight:bold;color:var(--accent);letter-spacing:2px;font-size:18px}
+  .brand span{color:var(--dim)}
+  .status{display:flex;gap:16px;align-items:center;font-size:13px;flex-wrap:wrap}
+  .timer{color:var(--accent2)}
+  .prog{color:var(--accent)}
+  button{font-family:var(--mono);cursor:pointer;border:1px solid var(--line);
+    background:#0c131b;color:var(--txt);padding:8px 12px;border-radius:5px}
+  button:hover{border-color:var(--accent);color:var(--accent)}
+  button.pri{background:var(--accent);color:#06240a;border-color:var(--accent);font-weight:bold}
+  nav{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line)}
+  .tab{font-size:12px;padding:8px 10px}
+  .tab.active{border-color:var(--accent);color:var(--accent)}
+  .tab .ok{color:var(--accent2)}
+  main{max-width:900px;margin:0 auto;padding:22px 16px 80px}
+  .page{display:none;animation:fade .25s ease}
+  .page.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+  h1,h2,h3{color:#e8f1e0;letter-spacing:1px}
+  h2{border-left:3px solid var(--accent);padding-left:10px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:16px;margin:14px 0}
+  .muted{color:var(--dim)}
+  .accent{color:var(--accent)}
+  code,kbd{background:#06202a;color:var(--accent2);padding:1px 5px;border-radius:3px}
+  input[type=text]{font-family:var(--mono);background:#06121a;border:1px solid var(--line);
+    color:var(--txt);padding:9px 10px;border-radius:5px;width:100%;max-width:340px}
+  input[type=range]{width:100%;max-width:340px;accent-color:var(--accent)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .frag{display:inline-block;background:#06240a;border:1px solid var(--accent);
+    color:var(--accent);padding:6px 10px;border-radius:5px;margin:4px 6px 0 0;font-weight:bold}
+  .frag.locked{background:#161616;border-color:#333;color:#555}
+  .result{margin-top:10px;font-weight:bold}
+  .good{color:var(--accent2)} .bad{color:var(--warn)}
+  .hint{margin-top:10px;font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:8px;display:none}
+  table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+  th,td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+  th{background:#0c1a22;color:var(--accent)}
+  .term{background:#05090d;border:1px solid var(--line);border-radius:6px;padding:10px;
+    height:230px;overflow:auto;font-size:13px;white-space:pre-wrap}
+  .term .in{color:var(--accent)}
+  .term-line{display:flex;gap:6px;margin-top:6px}
+  .term-line span{color:var(--accent)}
+  .term-line input{flex:1;background:transparent;border:none;color:var(--txt);
+    font-family:var(--mono);outline:none}
+  canvas{max-width:100%;border:1px solid var(--line);border-radius:6px;background:#000}
+  .opt{display:block;margin:6px 0;cursor:pointer}
+  .pill{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:2px 9px;color:var(--dim)}
+  svg{max-width:100%}
+  .foot{color:var(--dim);font-size:12px;text-align:center;margin-top:30px}
+  a{color:var(--accent2)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">i5 <span>//</span> ADVERSARY&nbsp;HUNT</div>
+  <div class="status">
+    <span class="pill">OP: SILENT LEDGER</span>
+    <span class="timer" id="timer">00:00</span>
+    <button id="tbtn" onclick="toggleTimer()">▶ start</button>
+    <span class="prog" id="prog">FRAGMENTS 0/5</span>
+  </div>
+</header>
+
+<nav id="nav">
+  <button class="tab active" data-p="brief" onclick="go('brief')">BRIEFING</button>
+  <button class="tab" data-p="intel" onclick="go('intel')">14N INTEL</button>
+  <button class="tab" data-p="cyber" onclick="go('cyber')">17S CYBER</button>
+  <button class="tab" data-p="eng" onclick="go('eng')">62E ENG</button>
+  <button class="tab" data-p="space" onclick="go('space')">13S SPACE</button>
+  <button class="tab" data-p="acq" onclick="go('acq')">63A ACQ</button>
+  <button class="tab" data-p="fusion" onclick="go('fusion')">★ FUSION</button>
+</nav>
+
+<main>
+<!-- ================= BRIEFING ================= -->
+<section class="page active" id="brief">
+  <h1>MISSION BRIEFING</h1>
+  <div class="card">
+    <p><span class="accent">CLASSIFICATION:</span> TRAINING // FICTIONAL // RELEASABLE TO i5</p>
+    <p>Guardians — a fictional adversary cell, cryptonym <span class="accent">SABLE&nbsp;BEAR</span>,
+    has been running a social-engineering campaign against a U.S. defense contractor. A multi-domain
+    task force has pulled fragments from five sources. <b>Your job: fuse them into one answer —
+    the physical location SABLE BEAR is operating from.</b></p>
+    <p>Each specialty desk below holds <b>one fragment</b>. No single desk gives the location.
+    The <span class="accent">13S Space</span> desk cannot resolve the city until the
+    <span class="accent">17S</span> and <span class="accent">62E</span> desks deliver coordinates.
+    Split your team, work the desks, then meet at <b>★ FUSION</b>.</p>
+  </div>
+  <div class="card">
+    <h3>DESK ASSIGNMENTS</h3>
+    <table>
+      <tr><th>Desk</th><th>SFSC role</th><th>Skill</th><th>Fragment</th></tr>
+      <tr><td>14N</td><td>Intelligence Officer</td><td>Image analysis + threat attribution</td><td>nation / hemisphere</td></tr>
+      <tr><td>17S</td><td>Cyberspace Effects</td><td>Packet decode (base64 / ROT13)</td><td>latitude</td></tr>
+      <tr><td>62E</td><td>Developmental Engineer</td><td>Resistor color code + logic</td><td>longitude</td></tr>
+      <tr><td>13S</td><td>Space Operations</td><td>Trilateration / ground track</td><td>city</td></tr>
+      <tr><td>63A</td><td>Acquisitions</td><td>Manifest cipher</td><td>key word</td></tr>
+    </table>
+    <p class="muted">Final flag format: <code>i5{CITY-LATN-LONE-KEY}</code></p>
+  </div>
+  <div class="card">
+    <h3>COLLECTED FRAGMENTS</h3>
+    <div id="fragbox">
+      <span class="frag locked" id="f-intel">14N ???</span>
+      <span class="frag locked" id="f-cyber">17S ???</span>
+      <span class="frag locked" id="f-eng">62E ???</span>
+      <span class="frag locked" id="f-space">13S ???</span>
+      <span class="frag locked" id="f-acq">63A ???</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 14N INTEL ================= -->
+<section class="page" id="intel">
+  <h2>14N // IMAGE INTELLIGENCE & ATTRIBUTION</h2>
+  <div class="card">
+    <p>An analyst flagged this intercept image as "too dark." Use the <b>brightness</b> and
+    <b>invert</b> sliders to pull the hidden low-contrast text out of the frame.</p>
+    <canvas id="stego" width="640" height="190"></canvas>
+    <div class="row" style="margin-top:10px">
+      <div>Brightness<br><input type="range" id="bright" min="1" max="30" value="1" oninput="stegoFilter()"></div>
+      <div>Invert<br><input type="range" id="inv" min="0" max="100" value="0" oninput="stegoFilter()"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>ATTRIBUTION</h3>
+    <p>The hidden TTP line reads: <b>SPEAR-PHISHING + SOCIAL ENGINEERING vs. a defense contractor.</b>
+    Match that specialty to the correct CrowdStrike cryptonym animal (the family the real
+    Fancy Bear/APT28 belongs to). Type just the <b>animal</b>.</p>
+    <table>
+      <tr><th>Cryptonym</th><th>Nation</th><th>Known for</th></tr>
+      <tr><td>BEAR</td><td>Russia</td><td>spear-phishing, social engineering, credential theft</td></tr>
+      <tr><td>PANDA</td><td>China</td><td>large-scale IP / strategic web compromise</td></tr>
+      <tr><td>KITTEN</td><td>Iran</td><td>regional espionage, wiper malware</td></tr>
+      <tr><td>CHOLLIMA</td><td>North Korea</td><td>currency theft, insider-threat ops</td></tr>
+    </table>
+    <div class="row" style="margin-top:10px">
+      <input type="text" id="intel-ans" placeholder="animal / cryptonym">
+      <button class="pri" onclick="check('intel')">SUBMIT</button>
+      <button onclick="hint('intel')">hint</button>
+    </div>
+    <div class="result" id="intel-res"></div>
+    <div class="hint" id="intel-hint">Russia-nexus groups carry this animal. The image also stamps the
+    hemisphere (N/E) — that rides along with the fragment automatically.</div>
+  </div>
+</section>
+
+<!-- ================= 17S CYBER ================= -->
+<section class="page" id="cyber">
+  <h2>17S // PACKET CAPTURE DECODE</h2>
+  <div class="card">
+    <p>A crew pulled one payload "on the wire." Work the terminal. Try:
+    <kbd>help</kbd>, <kbd>ls</kbd>, <kbd>cat capture.b64</kbd>, <kbd>b64 -d</kbd>, <kbd>rot13</kbd>.
+    The payload is double-wrapped (Base64 over ROT13). Decode it to read the latitude.</p>
+    <div class="term" id="term">i5-shell v1.3 — type 'help'</div>
+    <div class="term-line"><span>$</span><input id="cmd" autocomplete="off"
+      onkeydown="if(event.key==='Enter')runCmd()"></div>
+  </div>
+  <div class="card">
+    <h3>SUBMIT LATITUDE</h3>
+    <p>Enter it as digits + hemisphere, e.g. <code>54.71N</code>.</p>
+    <div class="row">
+      <input type="text" id="cyber-ans" placeholder="lat e.g. 54.71N">
+      <button class="pri" onclick="check('cyber')">SUBMIT</button>
+      <button onclick="hint('cyber')">hint</button>
+    </div>
+    <div class="result" id="cyber-res"></div>
+    <div class="hint" id="cyber-hint">Run <kbd>cat capture.b64</kbd>, then <kbd>b64 -d</kbd>,
+    then <kbd>rot13</kbd>. Dots/spaces are ignored on submit.</div>
+  </div>
+</section>
+
+<!-- ================= 62E ENG ================= -->
+<section class="page" id="eng">
+  <h2>62E // ELECTRICAL — RESISTOR COLOR CODE</h2>
+  <div class="card">
+    <p>A recovered board has a 4-band resistor. Read the bands left→right and convert each
+    to a digit with the chart. The four digits are the <b>longitude</b> (format DD.DD).</p>
+    <svg id="res" viewBox="0 0 420 120" width="420" height="120"></svg>
+    <table>
+      <tr><th>Color</th><th>Digit</th><th>Color</th><th>Digit</th></tr>
+      <tr><td>Black</td><td>0</td><td>Green</td><td>5</td></tr>
+      <tr><td>Brown</td><td>1</td><td>Blue</td><td>6</td></tr>
+      <tr><td>Red</td><td>2</td><td>Violet</td><td>7</td></tr>
+      <tr><td>Orange</td><td>3</td><td>Gray</td><td>8</td></tr>
+      <tr><td>Yellow</td><td>4</td><td>White</td><td>9</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>LOGIC GATE — HEMISPHERE</h3>
+    <p>The board's hemisphere latch is an <b>AND</b> gate. Inputs are both <b>1</b>.
+    If output = 1, hemisphere is <b>E</b> (east). Append that letter.</p>
+    <p>Enter longitude as digits + hemisphere, e.g. <code>20.51E</code>.</p>
+    <div class="row">
+      <input type="text" id="eng-ans" placeholder="lon e.g. 20.51E">
+      <button class="pri" onclick="check('eng')">SUBMIT</button>
+      <button onclick="hint('eng')">hint</button>
+    </div>
+    <div class="result" id="eng-res"></div>
+    <div class="hint" id="eng-hint">Bands are Red, Black, Green, Brown → 2,0,5,1 → 20.51.
+    AND(1,1)=1 → E.</div>
+  </div>
+</section>
+
+<!-- ================= 13S SPACE ================= -->
+<section class="page" id="space">
+  <h2>13S // ORBITAL — TRILATERATION & GROUND TRACK</h2>
+  <div class="card">
+    <p>A recon satellite's ground track crosses the fix delivered by 17S + 62E. Take the
+    <b>latitude from 17S</b> and <b>longitude from 62E</b>, then look up the matching city in the
+    gazetteer. You must have those two fragments first.</p>
+    <canvas id="track" width="640" height="300"></canvas>
+  </div>
+  <div class="card">
+    <h3>GAZETTEER</h3>
+    <table>
+      <tr><th>City</th><th>Approx. Lat</th><th>Approx. Lon</th></tr>
+      <tr><td>Reykjavik</td><td>64.15N</td><td>21.94W</td></tr>
+      <tr><td>Kaliningrad</td><td>54.71N</td><td>20.51E</td></tr>
+      <tr><td>Gdansk</td><td>54.35N</td><td>18.65E</td></tr>
+      <tr><td>Minsk</td><td>53.90N</td><td>27.57E</td></tr>
+      <tr><td>Tallinn</td><td>59.44N</td><td>24.75E</td></tr>
+    </table>
+    <div class="row" style="margin-top:10px">
+      <input type="text" id="space-ans" placeholder="city name">
+      <button class="pri" onclick="check('space')">SUBMIT</button>
+      <button onclick="hint('space')">hint</button>
+    </div>
+    <div class="result" id="space-res"></div>
+    <div class="hint" id="space-hint">Match 54.71N / 20.51E exactly. It is a Russian Baltic exclave
+    — fitting a "Bear" group.</div>
+  </div>
+</section>
+
+<!-- ================= 63A ACQ ================= -->
+<section class="page" id="acq">
+  <h2>63A // ACQUISITIONS — SHIPPING MANIFEST CIPHER</h2>
+  <div class="card">
+    <p>A front-company manifest for the adversary's region was intercepted. The key export field is
+    Caesar-shifted <b>+3</b> (shift it back 3 letters to read it). That word is the final
+    <b>KEY</b> that locks the flag.</p>
+    <table>
+      <tr><th>Field</th><th>Value</th></tr>
+      <tr><td>CONSIGNEE</td><td>SABLE LOGISTICS LLC</td></tr>
+      <tr><td>REGION</td><td>BALTIC EXCLAVE</td></tr>
+      <tr><td>PRIMARY EXPORT (cipher +3)</td><td class="accent">DPEHU</td></tr>
+    </table>
+    <p class="muted">Caesar −3: D→A, P→M, E→B, H→E, U→R …</p>
+    <div class="row" style="margin-top:10px">
+      <input type="text" id="acq-ans" placeholder="decoded key word">
+      <button class="pri" onclick="check('acq')">SUBMIT</button>
+      <button onclick="hint('acq')">hint</button>
+    </div>
+    <div class="result" id="acq-res"></div>
+    <div class="hint" id="acq-hint">Shift each letter back 3. The region produces most of the world's
+    supply of this gemstone resin.</div>
+  </div>
+</section>
+
+<!-- ================= FUSION ================= -->
+<section class="page" id="fusion">
+  <h2>★ FUSION — TARGET RESOLUTION</h2>
+  <div class="card">
+    <p>Assemble all five fragments into the flag:
+    <code>i5{CITY-LATN-LONE-KEY}</code>.</p>
+    <p class="muted">Example shape (not the answer): <code>i5{SOMEPLACE-1234N-5678E-WORD}</code></p>
+    <div id="fusion-frags"></div>
+    <div class="row" style="margin-top:12px">
+      <input type="text" id="fusion-ans" placeholder="i5{...}">
+      <button class="pri" onclick="check('fusion')">RESOLVE TARGET</button>
+      <button onclick="hint('fusion')">hint</button>
+    </div>
+    <div class="result" id="fusion-res"></div>
+    <div class="hint" id="fusion-hint">CITY from 13S, LAT from 17S (e.g. 5471N), LON from 62E
+    (e.g. 2051E), KEY from 63A. Join with dashes inside <code>i5{ }</code>.</div>
+  </div>
+  <div class="card" id="win" style="display:none">
+    <h2 style="color:var(--accent)">TARGET RESOLVED ✔</h2>
+    <p>SABLE BEAR is operating from <b class="accent">KALININGRAD, RUSSIA (54.71°N, 20.51°E)</b> —
+    a Russian Baltic exclave consistent with a "Bear" (Russia-nexus) group and a known
+    electronic-warfare environment. Nicely fused, Guardians.</p>
+    <p class="muted">Debrief time — see the facilitator's questions.</p>
+  </div>
+</section>
+
+<div class="foot">i5 Space Group — training exercise. All actors, units in-scenario, and locations
+used here are fictional or public-domain. Not for operational use.</div>
+</main>
+
+<script>
+/* ---------- obfuscated answers: char codes with +13 offset ---------- */
+function dec(a){return a.map(c=>String.fromCharCode(c-13)).join('');}
+function norm(s){return (s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');}
+const ANS = {
+  intel:[79,82,78,95],                                   // BEAR
+  cyber:[66,65,68,62,91],                                // 5471N
+  eng:[63,61,66,62,82],                                  // 2051E
+  space:[88,78,89,86,91,86,91,84,95,78,81],              // KALININGRAD
+  acq:[78,90,79,82,95]                                   // AMBER
+};
+const FUSION_TOKENS = [
+  [88,78,89,86,91,86,91,84,95,78,81],                    // KALININGRAD
+  [66,65,68,62],                                         // 5471
+  [63,61,66,62],                                         // 2051
+  [78,90,79,82,95]                                       // AMBER
+];
+const FRAGTOKEN = {
+  intel:"BEAR-NE", cyber:"LAT-5471N", eng:"LON-2051E",
+  space:"CITY-KALININGRAD", acq:"KEY-AMBER"
+};
+/* ---------- state ---------- */
+let FRAGS = {};
+try{ FRAGS = JSON.parse(localStorage.getItem('i5frags')||'{}'); }catch(e){ FRAGS={}; }
+function save(){ try{ localStorage.setItem('i5frags',JSON.stringify(FRAGS)); }catch(e){} }
+
+function go(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById(p).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.p===p));
+  if(p==='intel') drawStego();
+  if(p==='eng') drawResistor();
+  if(p==='space') drawTrack();
+  if(p==='fusion') renderFusion();
+  window.scrollTo(0,0);
+}
+function check(id){
+  const res=document.getElementById(id+'-res');
+  const val=norm(document.getElementById(id+'-ans').value);
+  if(id==='fusion'){
+    const have=Object.keys(FRAGS).length===5;
+    const all=FUSION_TOKENS.every(t=>val.includes(norm(dec(t))));
+    if(!have){res.innerHTML='<span class="bad">Collect all 5 fragments first.</span>';return;}
+    if(all){res.innerHTML='<span class="good">ACCESS GRANTED</span>';
+      document.getElementById('win').style.display='block';}
+    else res.innerHTML='<span class="bad">Incomplete or malformed flag. Re-check each fragment.</span>';
+    return;
+  }
+  if(val===norm(dec(ANS[id]))){
+    FRAGS[id]=FRAGTOKEN[id]; save(); updateFrags();
+    res.innerHTML='<span class="good">FRAGMENT SECURED → '+FRAGTOKEN[id]+'</span>';
+  } else {
+    res.innerHTML='<span class="bad">Negative. Re-work the decode.</span>';
+  }
+}
+function hint(id){const h=document.getElementById(id+'-hint');h.style.display='block';}
+function updateFrags(){
+  ['intel','cyber','eng','space','acq'].forEach(k=>{
+    const el=document.getElementById('f-'+k);
+    const code={intel:'14N',cyber:'17S',eng:'62E',space:'13S',acq:'63A'}[k];
+    if(FRAGS[k]){el.textContent=code+' '+FRAGS[k];el.classList.remove('locked');}
+    else{el.textContent=code+' ???';el.classList.add('locked');}
+  });
+  document.getElementById('prog').textContent='FRAGMENTS '+Object.keys(FRAGS).length+'/5';
+}
+function renderFusion(){
+  const box=document.getElementById('fusion-frags');
+  box.innerHTML = Object.keys(FRAGS).length
+    ? Object.keys(FRAGS).map(k=>'<span class="frag">'+FRAGS[k]+'</span>').join('')
+    : '<span class="muted">No fragments yet — work the five desks.</span>';
+}
+/* ---------- 14N stego ---------- */
+function drawStego(){
+  const c=document.getElementById('stego'),x=c.getContext('2d');
+  x.fillStyle='#000';x.fillRect(0,0,c.width,c.height);
+  // faint noise
+  for(let i=0;i<1600;i++){x.fillStyle='rgba(255,255,255,0.015)';
+    x.fillRect(Math.random()*c.width,Math.random()*c.height,1,1);}
+  x.fillStyle='rgba(255,255,255,0.045)'; // very low-contrast hidden text
+  x.font='bold 26px Courier New';
+  x.fillText('TTP: SPEAR-PHISHING + SOCIAL ENG',24,70);
+  x.font='bold 22px Courier New';
+  x.fillText('HEMISPHERE: N  /  E',24,120);
+  x.font='16px Courier New';
+  x.fillText('MATCH THE CRYPTONYM ANIMAL',24,160);
+}
+function stegoFilter(){
+  const b=document.getElementById('bright').value;
+  const i=document.getElementById('inv').value;
+  document.getElementById('stego').style.filter='brightness('+b+') invert('+(i/100)+')';
+}
+/* ---------- 17S terminal ---------- */
+const LAT = dec([89,78,97,86,97,98,81,82,45,66,65,59,68,62,45,91]); // "LATITUDE 54.71 N"
+function rot13(s){return s.replace(/[a-z]/gi,c=>{
+  const b=c<='Z'?65:97;return String.fromCharCode((c.charCodeAt(0)-b+13)%26+b);});}
+const WIRE = btoa(rot13(LAT)); // live, decodes correctly
+let lastOut='';
+function termPrint(t,cls){const d=document.getElementById('term');
+  d.innerHTML+='\n'+(cls?'<span class="'+cls+'">'+t+'</span>':t);d.scrollTop=d.scrollHeight;}
+function runCmd(){
+  const i=document.getElementById('cmd');const raw=i.value.trim();i.value='';
+  if(!raw)return; termPrint('$ '+raw,'in');
+  const cmd=raw.toLowerCase();
+  if(cmd==='help'){termPrint("commands: ls | cat capture.b64 | b64 -d | rot13 | clear");}
+  else if(cmd==='ls'){termPrint("capture.b64   readme.txt");}
+  else if(cmd==='cat readme.txt'){termPrint("Payload is Base64 over ROT13. Decode both layers.");}
+  else if(cmd==='cat capture.b64'){lastOut=WIRE;termPrint(WIRE);}
+  else if(cmd==='b64 -d'||cmd==='base64 -d'||cmd==='decode base64'){
+    if(lastOut===WIRE){lastOut=atob(WIRE);termPrint(lastOut);}
+    else termPrint("nothing piped — run 'cat capture.b64' first");}
+  else if(cmd==='rot13'||cmd==='decode rot13'){
+    if(lastOut===atob(WIRE)){lastOut=rot13(lastOut);termPrint(lastOut,'in');}
+    else termPrint("nothing piped — run 'b64 -d' first");}
+  else if(cmd==='clear'){document.getElementById('term').innerHTML="i5-shell v1.3 — type 'help'";}
+  else termPrint("unknown command: "+raw);
+}
+/* ---------- 62E resistor ---------- */
+function drawResistor(){
+  const s=document.getElementById('res');
+  const bands=['#d23','#111','#2a2','#a63']; // red, black, green, brown => 2,0,5,1
+  let b='';bands.forEach((c,k)=>{b+='<rect x="'+(120+k*45)+'" y="25" width="18" height="70" fill="'+c+'"/>';});
+  s.innerHTML=
+    '<line x1="10" y1="60" x2="400" y2="60" stroke="#999" stroke-width="4"/>'+
+    '<rect x="100" y="30" width="210" height="60" rx="22" fill="#c9b27e"/>'+b;
+}
+/* ---------- 13S ground track ---------- */
+function drawTrack(){
+  const c=document.getElementById('track'),x=c.getContext('2d');
+  x.fillStyle='#02121a';x.fillRect(0,0,c.width,c.height);
+  x.strokeStyle='#123';for(let i=0;i<=c.width;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,c.height);x.stroke();}
+  for(let j=0;j<=c.height;j+=40){x.beginPath();x.moveTo(0,j);x.lineTo(c.width,j);x.stroke();}
+  // sinusoidal ground track
+  x.strokeStyle='#9fef00';x.lineWidth=2;x.beginPath();
+  for(let px=0;px<=c.width;px++){const py=150+90*Math.sin(px/70);if(px===0)x.moveTo(px,py);else x.lineTo(px,py);}
+  x.stroke();
+  // three range rings
+  const stations=[[180,110],[430,180],[300,240]];
+  x.strokeStyle='#00e5a0';x.setLineDash([4,4]);
+  stations.forEach(s=>{x.beginPath();x.arc(s[0],s[1],95,0,7);x.stroke();
+    x.fillStyle='#00e5a0';x.fillRect(s[0]-3,s[1]-3,6,6);});
+  x.setLineDash([]);
+  // fix marker
+  x.fillStyle='#ff5c5c';x.beginPath();x.arc(305,170,6,0,7);x.fill();
+  x.fillStyle='#fff';x.font='13px Courier New';x.fillText('FIX: use 17S lat + 62E lon',330,165);
+}
+/* ---------- init ---------- */
+updateFrags();
+/* ---------- timer ---------- */
+let t=0,ti=null;
+function fmt(n){return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');}
+function toggleTimer(){
+  const b=document.getElementById('tbtn');
+  if(ti){clearInterval(ti);ti=null;b.textContent='▶ resume';}
+  else{ti=setInterval(()=>{t++;document.getElementById('timer').textContent=fmt(t);},1000);
+    b.textContent='⏸ pause';}
+}
+</script>
+</body>
+</html>
