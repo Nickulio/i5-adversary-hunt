@@ -76,7 +76,7 @@
     <span class="pill">OP: SILENT LEDGER</span>
     <span class="timer" id="timer">00:00</span>
     <button id="tbtn" onclick="toggleTimer()">▶ start</button>
-    <span class="prog" id="prog">FRAGMENTS 0/5</span>
+    <span class="prog" id="prog">PIECES 0/5</span>
   </div>
 </header>
 
@@ -95,30 +95,30 @@
 <section class="page active" id="brief">
   <h1>MISSION BRIEFING</h1>
   <div class="card">
-    <p><span class="accent">CLASSIFICATION:</span> TRAINING // FICTIONAL // RELEASABLE TO i5</p>
-    <p>Guardians — a fictional adversary cell, cryptonym <span class="accent">SABLE&nbsp;BEAR</span>,
-    has been running a social-engineering campaign against a U.S. defense contractor. A multi-domain
-    task force has pulled fragments from five sources. <b>Your job: fuse them into one answer —
-    the physical location SABLE BEAR is operating from.</b></p>
-    <p>Each specialty desk below holds <b>one fragment</b>. No single desk gives the location.
-    The <span class="accent">13S Space</span> desk cannot resolve the city until the
-    <span class="accent">17S</span> and <span class="accent">62E</span> desks deliver coordinates.
-    Split your team, work the desks, then meet at <b>★ FUSION</b>.</p>
+    <p><span class="accent">CLASSIFICATION:</span> TRAINING // FICTIONAL // i5 ONLY</p>
+    <p>Alright Guardians. There's a made up hacker group called <span class="accent">SABLE&nbsp;BEAR</span>
+    that's been phishing a U.S. defense contractor. Our task force grabbed pieces of info from five
+    different sources and we need you to put them together. <b>Goal: figure out where SABLE BEAR is
+    operating from.</b></p>
+    <p>Every desk below has <b>one piece</b> of the answer. None of them can solve it alone.
+    Heads up, the <span class="accent">13S Space</span> desk can't find the city until
+    <span class="accent">17S</span> and <span class="accent">62E</span> send over their coordinates,
+    so talk to each other. Split up, work your desk, then meet at <b>FUSION</b>.</p>
   </div>
   <div class="card">
-    <h3>DESK ASSIGNMENTS</h3>
+    <h3>WHO DOES WHAT</h3>
     <table>
-      <tr><th>Desk</th><th>SFSC role</th><th>Skill</th><th>Fragment</th></tr>
-      <tr><td>14N</td><td>Intelligence Officer</td><td>Image analysis + threat attribution</td><td>nation / hemisphere</td></tr>
-      <tr><td>17S</td><td>Cyberspace Effects</td><td>Packet decode (base64 / ROT13)</td><td>latitude</td></tr>
-      <tr><td>62E</td><td>Developmental Engineer</td><td>Resistor color code + logic</td><td>longitude</td></tr>
-      <tr><td>13S</td><td>Space Operations</td><td>Trilateration / ground track</td><td>city</td></tr>
-      <tr><td>63A</td><td>Acquisitions</td><td>Manifest cipher</td><td>key word</td></tr>
+      <tr><th>Desk</th><th>Career field</th><th>What you'll do</th><th>You get</th></tr>
+      <tr><td>14N</td><td>Intel</td><td>Find the hidden text in an image, then ID the group</td><td>country / hemisphere</td></tr>
+      <tr><td>17S</td><td>Cyber</td><td>Decode a captured message in the terminal</td><td>latitude</td></tr>
+      <tr><td>62E</td><td>Engineering</td><td>Read a resistor and a logic gate</td><td>longitude</td></tr>
+      <tr><td>13S</td><td>Space Ops</td><td>Use the coordinates to find the city</td><td>city</td></tr>
+      <tr><td>63A</td><td>Acquisitions</td><td>Crack a cipher on a shipping manifest</td><td>key word</td></tr>
     </table>
-    <p class="muted">Final flag format: <code>i5{CITY-LATN-LONE-KEY}</code></p>
+    <p class="muted">Final answer looks like: <code>i5{CITY-LATN-LONE-KEY}</code></p>
   </div>
   <div class="card">
-    <h3>COLLECTED FRAGMENTS</h3>
+    <h3>PIECES FOUND</h3>
     <div id="fragbox">
       <span class="frag locked" id="f-intel">14N ???</span>
       <span class="frag locked" id="f-cyber">17S ???</span>
@@ -131,10 +131,10 @@
 
 <!-- ================= 14N INTEL ================= -->
 <section class="page" id="intel">
-  <h2>14N // IMAGE INTELLIGENCE & ATTRIBUTION</h2>
+  <h2>14N // INTEL</h2>
   <div class="card">
-    <p>An analyst flagged this intercept image as "too dark." Use the <b>brightness</b> and
-    <b>invert</b> sliders to pull the hidden low-contrast text out of the frame.</p>
+    <p>Someone sent this image up saying it was "too dark to read." There's text hiding in it.
+    Mess with the <b>brightness</b> and <b>invert</b> sliders until you can see it.</p>
     <canvas id="stego" width="640" height="190"></canvas>
     <div class="row" style="margin-top:10px">
       <div>Brightness<br><input type="range" id="bright" min="1" max="30" value="1" oninput="stegoFilter()"></div>
@@ -142,62 +142,61 @@
     </div>
   </div>
   <div class="card">
-    <h3>ATTRIBUTION</h3>
-    <p>The hidden TTP line reads: <b>SPEAR-PHISHING + SOCIAL ENGINEERING vs. a defense contractor.</b>
-    Match that specialty to the correct CrowdStrike cryptonym animal (the family the real
-    Fancy Bear/APT28 belongs to). Type just the <b>animal</b>.</p>
+    <h3>WHO DID IT?</h3>
+    <p>Once you read the hidden text, use the chart to figure out which group does that kind of attack.
+    Hacker groups get animal names based on what country they're from. Type in just the <b>animal</b>.</p>
     <table>
-      <tr><th>Cryptonym</th><th>Nation</th><th>Known for</th></tr>
-      <tr><td>BEAR</td><td>Russia</td><td>spear-phishing, social engineering, credential theft</td></tr>
-      <tr><td>PANDA</td><td>China</td><td>large-scale IP / strategic web compromise</td></tr>
-      <tr><td>KITTEN</td><td>Iran</td><td>regional espionage, wiper malware</td></tr>
-      <tr><td>CHOLLIMA</td><td>North Korea</td><td>currency theft, insider-threat ops</td></tr>
+      <tr><th>Name</th><th>Country</th><th>Known for</th></tr>
+      <tr><td>BEAR</td><td>Russia</td><td>phishing, social engineering, stealing logins</td></tr>
+      <tr><td>PANDA</td><td>China</td><td>stealing IP and research at a huge scale</td></tr>
+      <tr><td>KITTEN</td><td>Iran</td><td>spying in the region, wiping data</td></tr>
+      <tr><td>CHOLLIMA</td><td>North Korea</td><td>stealing money and crypto</td></tr>
     </table>
     <div class="row" style="margin-top:10px">
-      <input type="text" id="intel-ans" placeholder="animal / cryptonym">
+      <input type="text" id="intel-ans" placeholder="animal">
       <button class="pri" onclick="check('intel')">SUBMIT</button>
       <button onclick="hint('intel')">hint</button>
     </div>
     <div class="result" id="intel-res"></div>
-    <div class="hint" id="intel-hint">Russia-nexus groups carry this animal. The image also stamps the
-    hemisphere (N/E) — that rides along with the fragment automatically.</div>
+    <div class="hint" id="intel-hint">Look at the "known for" column and match it to what the image says.
+    The hemisphere in the image gets added to your piece automatically.</div>
   </div>
 </section>
 
 <!-- ================= 17S CYBER ================= -->
 <section class="page" id="cyber">
-  <h2>17S // PACKET CAPTURE DECODE</h2>
+  <h2>17S // CYBER</h2>
   <div class="card">
-    <p>A crew pulled one payload "on the wire." Work the terminal. Try:
-    <kbd>help</kbd>, <kbd>ls</kbd>, <kbd>cat capture.b64</kbd>, <kbd>b64 -d</kbd>, <kbd>rot13</kbd>.
-    The payload is double-wrapped (Base64 over ROT13). Decode it to read the latitude.</p>
-    <div class="term" id="term">i5-shell v1.3 — type 'help'</div>
+    <p>We caught a message going across the network but it's encoded twice. Use the terminal below
+    to decode it. Start by typing <kbd>help</kbd> to see what commands you have.</p>
+    <div class="term" id="term">i5-shell v1.3 | type 'help' to start</div>
     <div class="term-line"><span>$</span><input id="cmd" autocomplete="off"
       onkeydown="if(event.key==='Enter')runCmd()"></div>
   </div>
   <div class="card">
     <h3>SUBMIT LATITUDE</h3>
-    <p>Enter it as digits + hemisphere, e.g. <code>54.71N</code>.</p>
+    <p>Type it as the number plus the letter, like <code>12.34N</code>.</p>
     <div class="row">
-      <input type="text" id="cyber-ans" placeholder="lat e.g. 54.71N">
+      <input type="text" id="cyber-ans" placeholder="latitude">
       <button class="pri" onclick="check('cyber')">SUBMIT</button>
       <button onclick="hint('cyber')">hint</button>
     </div>
     <div class="result" id="cyber-res"></div>
-    <div class="hint" id="cyber-hint">Run <kbd>cat capture.b64</kbd>, then <kbd>b64 -d</kbd>,
-    then <kbd>rot13</kbd>. Dots/spaces are ignored on submit.</div>
+    <div class="hint" id="cyber-hint">Read the readme first. You'll need to open the capture file,
+    then run the two decode commands in the right order.</div>
   </div>
 </section>
 
 <!-- ================= 62E ENG ================= -->
 <section class="page" id="eng">
-  <h2>62E // ELECTRICAL — RESISTOR COLOR CODE</h2>
+  <h2>62E // ENGINEERING</h2>
   <div class="card">
-    <p>A recovered board has a 4-band resistor. Read the bands left→right and convert each
-    to a digit with the chart. The four digits are the <b>longitude</b> (format DD.DD).</p>
+    <p>We pulled a circuit board off their gear and there's a resistor on it with 4 color bands.
+    Read the colors left to right and turn each one into a number using the chart.
+    Those 4 numbers are the <b>longitude</b> (put a decimal after the first two).</p>
     <svg id="res" viewBox="0 0 420 120" width="420" height="120"></svg>
     <table>
-      <tr><th>Color</th><th>Digit</th><th>Color</th><th>Digit</th></tr>
+      <tr><th>Color</th><th>#</th><th>Color</th><th>#</th></tr>
       <tr><td>Black</td><td>0</td><td>Green</td><td>5</td></tr>
       <tr><td>Brown</td><td>1</td><td>Blue</td><td>6</td></tr>
       <tr><td>Red</td><td>2</td><td>Violet</td><td>7</td></tr>
@@ -206,34 +205,34 @@
     </table>
   </div>
   <div class="card">
-    <h3>LOGIC GATE — HEMISPHERE</h3>
-    <p>The board's hemisphere latch is an <b>AND</b> gate. Inputs are both <b>1</b>.
-    If output = 1, hemisphere is <b>E</b> (east). Append that letter.</p>
-    <p>Enter longitude as digits + hemisphere, e.g. <code>20.51E</code>.</p>
+    <h3>EAST OR WEST?</h3>
+    <p>There's also an <b>AND</b> gate on the board with both inputs set to <b>1</b>.
+    If the output is 1, it's <b>E</b>. If it's 0, it's <b>W</b>. Add that letter to the end.</p>
+    <p>Type it like <code>12.34E</code>.</p>
     <div class="row">
-      <input type="text" id="eng-ans" placeholder="lon e.g. 20.51E">
+      <input type="text" id="eng-ans" placeholder="longitude">
       <button class="pri" onclick="check('eng')">SUBMIT</button>
       <button onclick="hint('eng')">hint</button>
     </div>
     <div class="result" id="eng-res"></div>
-    <div class="hint" id="eng-hint">Bands are Red, Black, Green, Brown → 2,0,5,1 → 20.51.
-    AND(1,1)=1 → E.</div>
+    <div class="hint" id="eng-hint">An AND gate only outputs 1 when both inputs are 1.
+    For the colors, the brown band is the last one.</div>
   </div>
 </section>
 
 <!-- ================= 13S SPACE ================= -->
 <section class="page" id="space">
-  <h2>13S // ORBITAL — TRILATERATION & GROUND TRACK</h2>
+  <h2>13S // SPACE OPS</h2>
   <div class="card">
-    <p>A recon satellite's ground track crosses the fix delivered by 17S + 62E. Take the
-    <b>latitude from 17S</b> and <b>longitude from 62E</b>, then look up the matching city in the
-    gazetteer. You must have those two fragments first.</p>
+    <p>Our satellite passed over the spot where the signal came from. You need the
+    <b>latitude from 17S</b> and the <b>longitude from 62E</b> to figure out which city it is,
+    so go bug them if they haven't sent it yet.</p>
     <canvas id="track" width="640" height="300"></canvas>
   </div>
   <div class="card">
-    <h3>GAZETTEER</h3>
+    <h3>CITY LIST</h3>
     <table>
-      <tr><th>City</th><th>Approx. Lat</th><th>Approx. Lon</th></tr>
+      <tr><th>City</th><th>Lat</th><th>Lon</th></tr>
       <tr><td>Reykjavik</td><td>64.15N</td><td>21.94W</td></tr>
       <tr><td>Kaliningrad</td><td>54.71N</td><td>20.51E</td></tr>
       <tr><td>Gdansk</td><td>54.35N</td><td>18.65E</td></tr>
@@ -246,64 +245,63 @@
       <button onclick="hint('space')">hint</button>
     </div>
     <div class="result" id="space-res"></div>
-    <div class="hint" id="space-hint">Match 54.71N / 20.51E exactly. It is a Russian Baltic exclave
-    — fitting a "Bear" group.</div>
+    <div class="hint" id="space-hint">The numbers have to match exactly. Also think about
+    which country the 14N desk said the group is from.</div>
   </div>
 </section>
 
 <!-- ================= 63A ACQ ================= -->
 <section class="page" id="acq">
-  <h2>63A // ACQUISITIONS — SHIPPING MANIFEST CIPHER</h2>
+  <h2>63A // ACQUISITIONS</h2>
   <div class="card">
-    <p>A front-company manifest for the adversary's region was intercepted. The key export field is
-    Caesar-shifted <b>+3</b> (shift it back 3 letters to read it). That word is the final
-    <b>KEY</b> that locks the flag.</p>
+    <p>We got our hands on a shipping manifest from a fake company tied to the group.
+    The export field is scrambled with a Caesar cipher (every letter got moved forward 3).
+    Move each letter back 3 to read it. That word is your <b>KEY</b>.</p>
     <table>
       <tr><th>Field</th><th>Value</th></tr>
-      <tr><td>CONSIGNEE</td><td>SABLE LOGISTICS LLC</td></tr>
+      <tr><td>SHIPPED TO</td><td>SABLE LOGISTICS LLC</td></tr>
       <tr><td>REGION</td><td>BALTIC EXCLAVE</td></tr>
-      <tr><td>PRIMARY EXPORT (cipher +3)</td><td class="accent">DPEHU</td></tr>
+      <tr><td>MAIN EXPORT (scrambled)</td><td class="accent">DPEHU</td></tr>
     </table>
-    <p class="muted">Caesar −3: D→A, P→M, E→B, H→E, U→R …</p>
+    <p class="muted">Example: D goes back 3 to A.</p>
     <div class="row" style="margin-top:10px">
-      <input type="text" id="acq-ans" placeholder="decoded key word">
+      <input type="text" id="acq-ans" placeholder="key word">
       <button class="pri" onclick="check('acq')">SUBMIT</button>
       <button onclick="hint('acq')">hint</button>
     </div>
     <div class="result" id="acq-res"></div>
-    <div class="hint" id="acq-hint">Shift each letter back 3. The region produces most of the world's
-    supply of this gemstone resin.</div>
+    <div class="hint" id="acq-hint">It's a yellowish orange gem made from old tree resin.
+    The Baltic area is famous for it.</div>
   </div>
 </section>
 
 <!-- ================= FUSION ================= -->
 <section class="page" id="fusion">
-  <h2>★ FUSION — TARGET RESOLUTION</h2>
+  <h2>FUSION // PUT IT TOGETHER</h2>
   <div class="card">
-    <p>Assemble all five fragments into the flag:
-    <code>i5{CITY-LATN-LONE-KEY}</code>.</p>
-    <p class="muted">Example shape (not the answer): <code>i5{SOMEPLACE-1234N-5678E-WORD}</code></p>
+    <p>Get everyone back together and combine all five pieces into one answer:
+    <code>i5{CITY-LATN-LONE-KEY}</code></p>
+    <p class="muted">Example of the format (not the answer): <code>i5{SOMEPLACE-1234N-5678E-WORD}</code></p>
     <div id="fusion-frags"></div>
     <div class="row" style="margin-top:12px">
       <input type="text" id="fusion-ans" placeholder="i5{...}">
-      <button class="pri" onclick="check('fusion')">RESOLVE TARGET</button>
+      <button class="pri" onclick="check('fusion')">SUBMIT</button>
       <button onclick="hint('fusion')">hint</button>
     </div>
     <div class="result" id="fusion-res"></div>
-    <div class="hint" id="fusion-hint">CITY from 13S, LAT from 17S (e.g. 5471N), LON from 62E
-    (e.g. 2051E), KEY from 63A. Join with dashes inside <code>i5{ }</code>.</div>
+    <div class="hint" id="fusion-hint">City from 13S, latitude from 17S, longitude from 62E,
+    key from 63A. Drop the decimals and put dashes between them.</div>
   </div>
   <div class="card" id="win" style="display:none">
-    <h2 style="color:var(--accent)">TARGET RESOLVED ✔</h2>
-    <p>SABLE BEAR is operating from <b class="accent">KALININGRAD, RUSSIA (54.71°N, 20.51°E)</b> —
-    a Russian Baltic exclave consistent with a "Bear" (Russia-nexus) group and a known
-    electronic-warfare environment. Nicely fused, Guardians.</p>
-    <p class="muted">Debrief time — see the facilitator's questions.</p>
+    <h2 style="color:var(--accent)">YOU FOUND THEM</h2>
+    <p>SABLE BEAR is operating out of <b class="accent">KALININGRAD, RUSSIA (54.71N, 20.51E)</b>.
+    It's a small piece of Russia between Poland and Lithuania, which makes sense for a "Bear" group.
+    Good work everyone.</p>
+    <p class="muted">Hang tight, we're going to talk through it as a group.</p>
   </div>
 </section>
 
-<div class="foot">i5 Space Group — training exercise. All actors, units in-scenario, and locations
-used here are fictional or public-domain. Not for operational use.</div>
+<div class="foot">i5 Space Group training exercise. The group and companies in here are made up.</div>
 </main>
 
 <script>
@@ -348,17 +346,17 @@ function check(id){
   if(id==='fusion'){
     const have=Object.keys(FRAGS).length===5;
     const all=FUSION_TOKENS.every(t=>val.includes(norm(dec(t))));
-    if(!have){res.innerHTML='<span class="bad">Collect all 5 fragments first.</span>';return;}
-    if(all){res.innerHTML='<span class="good">ACCESS GRANTED</span>';
+    if(!have){res.innerHTML='<span class="bad">You still need all 5 pieces first.</span>';return;}
+    if(all){res.innerHTML='<span class="good">That&#39;s it!</span>';
       document.getElementById('win').style.display='block';}
-    else res.innerHTML='<span class="bad">Incomplete or malformed flag. Re-check each fragment.</span>';
+    else res.innerHTML='<span class="bad">Not quite. Double check each piece and the format.</span>';
     return;
   }
   if(val===norm(dec(ANS[id]))){
     FRAGS[id]=FRAGTOKEN[id]; save(); updateFrags();
-    res.innerHTML='<span class="good">FRAGMENT SECURED → '+FRAGTOKEN[id]+'</span>';
+    res.innerHTML='<span class="good">Got it! Your piece: '+FRAGTOKEN[id]+'</span>';
   } else {
-    res.innerHTML='<span class="bad">Negative. Re-work the decode.</span>';
+    res.innerHTML='<span class="bad">Nope, try again.</span>';
   }
 }
 function hint(id){const h=document.getElementById(id+'-hint');h.style.display='block';}
@@ -369,13 +367,13 @@ function updateFrags(){
     if(FRAGS[k]){el.textContent=code+' '+FRAGS[k];el.classList.remove('locked');}
     else{el.textContent=code+' ???';el.classList.add('locked');}
   });
-  document.getElementById('prog').textContent='FRAGMENTS '+Object.keys(FRAGS).length+'/5';
+  document.getElementById('prog').textContent='PIECES '+Object.keys(FRAGS).length+'/5';
 }
 function renderFusion(){
   const box=document.getElementById('fusion-frags');
   box.innerHTML = Object.keys(FRAGS).length
     ? Object.keys(FRAGS).map(k=>'<span class="frag">'+FRAGS[k]+'</span>').join('')
-    : '<span class="muted">No fragments yet — work the five desks.</span>';
+    : '<span class="muted">No pieces yet. Go work the desks.</span>';
 }
 /* ---------- 14N stego ---------- */
 function drawStego(){
@@ -411,15 +409,15 @@ function runCmd(){
   const cmd=raw.toLowerCase();
   if(cmd==='help'){termPrint("commands: ls | cat capture.b64 | b64 -d | rot13 | clear");}
   else if(cmd==='ls'){termPrint("capture.b64   readme.txt");}
-  else if(cmd==='cat readme.txt'){termPrint("Payload is Base64 over ROT13. Decode both layers.");}
+  else if(cmd==='cat readme.txt'){termPrint("The message was put through ROT13, then Base64. Undo them in reverse order.");}
   else if(cmd==='cat capture.b64'){lastOut=WIRE;termPrint(WIRE);}
   else if(cmd==='b64 -d'||cmd==='base64 -d'||cmd==='decode base64'){
     if(lastOut===WIRE){lastOut=atob(WIRE);termPrint(lastOut);}
-    else termPrint("nothing piped — run 'cat capture.b64' first");}
+    else termPrint("nothing to decode yet, run 'cat capture.b64' first");}
   else if(cmd==='rot13'||cmd==='decode rot13'){
     if(lastOut===atob(WIRE)){lastOut=rot13(lastOut);termPrint(lastOut,'in');}
-    else termPrint("nothing piped — run 'b64 -d' first");}
-  else if(cmd==='clear'){document.getElementById('term').innerHTML="i5-shell v1.3 — type 'help'";}
+    else termPrint("do the base64 step first ('b64 -d')");}
+  else if(cmd==='clear'){document.getElementById('term').innerHTML="i5-shell v1.3 | type 'help' to start";}
   else termPrint("unknown command: "+raw);
 }
 /* ---------- 62E resistor ---------- */
