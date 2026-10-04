@@ -8,11 +8,10 @@
   :root{
     --bg:#0a0e12; --panel:#0f1620; --panel2:#0c121a; --line:#1d2a36;
     --txt:#c6d0d8; --dim:#6b7d8c; --accent:#9fef00; --accent2:#00e5a0;
-    --warn:#ff5c5c; --mono:'Courier New',ui-monospace,Menlo,Consolas,monospace;
+    --warn:#ff5c5c; --blue:#8cc8ff; --mono:'Courier New',ui-monospace,Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--mono);
-    line-height:1.5;background-color:#05080d;
+  body{margin:0;color:var(--txt);font-family:var(--mono);line-height:1.5;background-color:#05080d;
     background-image:
       radial-gradient(1px 1px at 20px 30px,#fff,transparent),
       radial-gradient(1px 1px at 120px 80px,#9bd,transparent),
@@ -27,31 +26,34 @@
     background-attachment:fixed;}
   .motto{font-size:11px;color:var(--dim);letter-spacing:3px;display:block;margin-top:2px}
   .ussf{border-left:3px solid #4aa3ff;background:rgba(20,40,70,.45)}
-  .ussf h3{color:#8cc8ff;margin-top:0}
+  .ussf h3{color:var(--blue);margin-top:0}
   header{border-bottom:1px solid var(--line);padding:14px 18px;display:flex;
     flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
     background:linear-gradient(180deg,#0c141c,#0a0e12);position:sticky;top:0;z-index:20}
   .brand{font-weight:bold;color:var(--accent);letter-spacing:2px;font-size:18px}
   .brand span{color:var(--dim)}
-  .status{display:flex;gap:16px;align-items:center;font-size:13px;flex-wrap:wrap}
+  .status{display:flex;gap:14px;align-items:center;font-size:13px;flex-wrap:wrap}
   .timer{color:var(--accent2)}
   .prog{color:var(--accent)}
   button{font-family:var(--mono);cursor:pointer;border:1px solid var(--line);
     background:#0c131b;color:var(--txt);padding:8px 12px;border-radius:5px}
   button:hover{border-color:var(--accent);color:var(--accent)}
+  button:disabled{opacity:.4;cursor:not-allowed}
   button.pri{background:var(--accent);color:#06240a;border-color:var(--accent);font-weight:bold}
+  button.big{font-size:16px;padding:12px 20px}
   nav{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line)}
   .tab{font-size:12px;padding:8px 10px}
   .tab.active{border-color:var(--accent);color:var(--accent)}
-  .tab .ok{color:var(--accent2)}
+  .tab.done{color:var(--accent2)}
   main{max-width:900px;margin:0 auto;padding:22px 16px 80px}
   .page{display:none;animation:fade .25s ease}
   .page.active{display:block}
+  .screen{display:none}
+  .screen.active{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
   h1,h2,h3{color:#e8f1e0;letter-spacing:1px}
   h2{border-left:3px solid var(--accent);padding-left:10px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;
-    padding:16px;margin:14px 0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;margin:14px 0}
   .muted{color:var(--dim)}
   .accent{color:var(--accent)}
   code,kbd{background:#06202a;color:var(--accent2);padding:1px 5px;border-radius:3px}
@@ -61,7 +63,6 @@
   .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
   .frag{display:inline-block;background:#06240a;border:1px solid var(--accent);
     color:var(--accent);padding:6px 10px;border-radius:5px;margin:4px 6px 0 0;font-weight:bold}
-  .frag.locked{background:#161616;border-color:#333;color:#555}
   .result{margin-top:10px;font-weight:bold}
   .good{color:var(--accent2)} .bad{color:var(--warn)}
   .hint{margin-top:10px;font-size:13px;color:var(--dim);border-top:1px dashed var(--line);padding-top:8px;display:none}
@@ -73,40 +74,119 @@
   .term .in{color:var(--accent)}
   .term-line{display:flex;gap:6px;margin-top:6px}
   .term-line span{color:var(--accent)}
-  .term-line input{flex:1;background:transparent;border:none;color:var(--txt);
-    font-family:var(--mono);outline:none}
+  .term-line input{flex:1;background:transparent;border:none;color:var(--txt);font-family:var(--mono);outline:none}
   canvas{max-width:100%;border:1px solid var(--line);border-radius:6px;background:#000}
-  .opt{display:block;margin:6px 0;cursor:pointer}
   .pill{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:2px 9px;color:var(--dim)}
   svg{max-width:100%}
   .foot{color:var(--dim);font-size:12px;text-align:center;margin-top:30px}
   a{color:var(--accent2)}
+  /* lobby */
+  .center{max-width:520px;margin:40px auto}
+  .roomcode{font-size:44px;letter-spacing:10px;color:var(--accent);font-weight:bold}
+  .plist{list-style:none;padding:0;margin:0}
+  .plist li{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:9px 10px;border:1px solid var(--line);border-radius:6px;margin:6px 0;background:var(--panel2)}
+  .chip{font-size:11px;border:1px solid #2b4458;color:var(--blue);border-radius:4px;padding:1px 6px;margin-right:4px}
+  .rdy{color:var(--accent2);font-weight:bold}
+  .notrdy{color:var(--dim)}
+  .deskpick{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:8px}
+  .deskpick label{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:6px;padding:9px;cursor:pointer;background:var(--panel2)}
+  .deskpick label.on{border-color:var(--accent)}
+  .deskpick input{accent-color:var(--accent);margin-top:3px}
+  .cover{font-size:12px}
+  .cover span{margin-right:10px}
+  .lockcard{border:1px dashed #4a5b6a;text-align:center;padding:26px 16px}
+  .lockcard .ico{font-size:34px}
+  .yell{border:1px solid var(--accent);background:#0b1f0b;border-radius:6px;padding:10px;margin-top:10px}
+  .yell b{color:var(--accent)}
+  .feed{font-size:13px;max-height:200px;overflow:auto}
+  .feed div{padding:3px 0;border-bottom:1px dotted var(--line)}
+  .banner{background:#2a1f05;border-bottom:1px solid #6b5212;color:#ffd27a;font-size:12px;text-align:center;padding:6px}
+  .overlay{position:fixed;inset:0;background:rgba(2,6,10,.88);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+  .overlay.show{display:flex}
+  .overlay .card{max-width:560px;width:100%;text-align:center;border-color:var(--accent)}
+  .bigtime{font-size:40px;color:var(--accent2);font-weight:bold}
 </style>
 </head>
 <body>
+<div class="banner" id="modeBanner" style="display:none"></div>
+
 <header>
   <div class="brand">&#9733; i5 SPACE GROUP <span>//</span> ADVERSARY&nbsp;HUNT<span class="motto">SEMPER SUPRA &middot; ALWAYS ABOVE</span></div>
-  <div class="status">
-    <span class="pill">OP: SILENT LEDGER</span>
+  <div class="status" id="hud" style="display:none">
+    <span class="pill" id="hudRoom">ROOM ----</span>
     <span class="timer" id="timer">00:00</span>
-    <button id="tbtn" onclick="toggleTimer()">▶ start</button>
-    <span class="prog" id="prog">PIECES 0/5</span>
+    <span class="prog" id="prog">DESKS CRACKED 0/5</span>
   </div>
 </header>
 
+<!-- ================= JOIN ================= -->
+<div class="screen active" id="screen-join">
+  <main>
+    <div class="center">
+      <h1>JOIN THE TASK FORCE</h1>
+      <p class="muted">Pick a callsign. One person makes a room, everyone else joins with the code.</p>
+      <div class="card">
+        <p>Callsign</p>
+        <input type="text" id="nameIn" maxlength="16" placeholder="e.g. Nick">
+        <div class="row" style="margin-top:16px">
+          <button class="pri" onclick="createRoom()">CREATE ROOM</button>
+        </div>
+        <p class="muted" style="margin:18px 0 6px">or join one</p>
+        <div class="row">
+          <input type="text" id="codeIn" maxlength="4" placeholder="ROOM CODE" style="max-width:160px;text-transform:uppercase">
+          <button onclick="joinRoom()">JOIN</button>
+        </div>
+        <div class="result" id="joinRes"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ================= LOBBY ================= -->
+<div class="screen" id="screen-lobby">
+  <main>
+    <div class="center" style="max-width:640px">
+      <p class="muted" style="margin-bottom:0">ROOM CODE</p>
+      <div class="roomcode" id="lobbyCode">----</div>
+      <p class="muted">Put this on the board so everyone can join.</p>
+
+      <div class="card">
+        <h3 style="margin-top:0">1. PICK YOUR DESK</h3>
+        <p class="muted" style="margin-top:0">Every desk needs at least one person. If you don't have five people, somebody takes two.</p>
+        <div class="deskpick" id="deskPick"></div>
+        <div class="cover" id="coverage" style="margin-top:10px"></div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">2. READY UP</h3>
+        <ul class="plist" id="plist"></ul>
+        <div class="row" style="margin-top:12px">
+          <button class="pri big" id="readyBtn" onclick="toggleReady()">READY</button>
+          <button id="soloBtn" onclick="forceStart()" style="display:none">start anyway</button>
+        </div>
+        <p class="result" id="lobbyStatus"></p>
+      </div>
+      <button onclick="leaveRoom()">leave room</button>
+    </div>
+  </main>
+</div>
+
+<!-- ================= GAME ================= -->
+<div class="screen" id="screen-game">
 <nav id="nav">
-  <button class="tab active" data-p="brief" onclick="go('brief')">BRIEFING</button>
+  <button class="tab" data-p="brief" onclick="go('brief')">BRIEFING</button>
   <button class="tab" data-p="intel" onclick="go('intel')">14N INTEL</button>
   <button class="tab" data-p="cyber" onclick="go('cyber')">17S CYBER</button>
   <button class="tab" data-p="eng" onclick="go('eng')">62E ENG</button>
   <button class="tab" data-p="space" onclick="go('space')">13S SPACE</button>
   <button class="tab" data-p="acq" onclick="go('acq')">63A ACQ</button>
-  <button class="tab" data-p="fusion" onclick="go('fusion')">★ FUSION</button>
+  <button class="tab" data-p="fusion" onclick="go('fusion')">&#9733; FUSION</button>
 </nav>
 
 <main>
-<!-- ================= BRIEFING ================= -->
-<section class="page active" id="brief">
+<!-- BRIEFING -->
+<section class="page" id="brief">
   <h1>MISSION BRIEFING</h1>
   <p class="muted">Space is a warfighting domain now. Everything we do on the ground, from GPS to comms to missile warning, runs through it. Today you get to work like a Space Force task force does.</p>
   <div class="card">
@@ -115,38 +195,36 @@
     that's been phishing a U.S. defense contractor. Our task force grabbed pieces of info from five
     different sources and we need you to put them together. <b>Goal: figure out where SABLE BEAR is
     operating from.</b></p>
-    <p>Every desk below has <b>one piece</b> of the answer. None of them can solve it alone.
-    Heads up, the <span class="accent">13S Space</span> desk can't find the city until
-    <span class="accent">17S</span> and <span class="accent">62E</span> send over their coordinates,
-    so talk to each other. Split up, work your desk, then meet at <b>FUSION</b>.</p>
+    <p>You can only see <b>your</b> desk. Some desks are locked until another desk cracks theirs and
+    <b>tells you out loud</b> what they found. The website won't pass it along for you. Talk to each other.</p>
   </div>
   <div class="card">
-    <h3>WHO DOES WHAT</h3>
+    <h3>THE CHAIN</h3>
     <table>
-      <tr><th>Desk</th><th>Career field</th><th>What you'll do</th><th>You get</th></tr>
-      <tr><td>14N</td><td>Intel</td><td>Find the hidden text in an image, then ID the group</td><td>country / hemisphere</td></tr>
-      <tr><td>17S</td><td>Cyber</td><td>Decode a captured message in the terminal</td><td>latitude</td></tr>
-      <tr><td>62E</td><td>Engineering</td><td>Read a resistor and a logic gate</td><td>longitude</td></tr>
-      <tr><td>13S</td><td>Space Ops</td><td>Use the coordinates to find the city</td><td>city</td></tr>
-      <tr><td>63A</td><td>Acquisitions</td><td>Crack a cipher on a shipping manifest</td><td>key word</td></tr>
+      <tr><th>Desk</th><th>Starts</th><th>When you crack it, tell...</th></tr>
+      <tr><td>14N Intel</td><td class="good">open</td><td>17S Cyber (unlock code)</td></tr>
+      <tr><td>62E Engineering</td><td class="good">open</td><td>13S Space (longitude)</td></tr>
+      <tr><td>17S Cyber</td><td>locked, needs 14N</td><td>13S Space (latitude)</td></tr>
+      <tr><td>13S Space Ops</td><td>locked, needs 17S + 62E</td><td>63A Acquisitions (city)</td></tr>
+      <tr><td>63A Acquisitions</td><td>locked, needs 13S</td><td>the whole team (key word)</td></tr>
     </table>
+    <p class="muted">Locked desk? Don't just sit there. Go help a desk that's open.</p>
     <p class="muted">Final answer looks like: <code>i5{CITY-LATN-LONE-KEY}</code></p>
   </div>
   <div class="card">
-    <h3>PIECES FOUND</h3>
-    <div id="fragbox">
-      <span class="frag locked" id="f-intel">14N ???</span>
-      <span class="frag locked" id="f-cyber">17S ???</span>
-      <span class="frag locked" id="f-eng">62E ???</span>
-      <span class="frag locked" id="f-space">13S ???</span>
-      <span class="frag locked" id="f-acq">63A ???</span>
-    </div>
+    <h3>WHO'S ON WHAT</h3>
+    <table id="rosterTable"></table>
+  </div>
+  <div class="card">
+    <h3>TEAM FEED</h3>
+    <div class="feed" id="feed1"></div>
   </div>
 </section>
 
-<!-- ================= 14N INTEL ================= -->
+<!-- 14N INTEL -->
 <section class="page" id="intel">
   <h2>14N // INTEL</h2>
+  <div class="deskbody">
   <div class="card">
     <p>Someone sent this image up saying it was "too dark to read." There's text hiding in it.
     Mess with the <b>brightness</b> and <b>invert</b> sliders until you can see it.</p>
@@ -173,8 +251,8 @@
       <button onclick="hint('intel')">hint</button>
     </div>
     <div class="result" id="intel-res"></div>
-    <div class="hint" id="intel-hint">Look at the "known for" column and match it to what the image says.
-    The hemisphere in the image gets added to your piece automatically.</div>
+    <div class="hint" id="intel-hint">Look at the "known for" column and match it to what the image says.</div>
+  </div>
   </div>
   <div class="card ussf">
     <h3>IN THE SPACE FORCE</h3>
@@ -184,14 +262,26 @@
   </div>
 </section>
 
-<!-- ================= 17S CYBER ================= -->
+<!-- 17S CYBER -->
 <section class="page" id="cyber">
   <h2>17S // CYBER</h2>
+  <div class="card lockcard">
+    <div class="ico">&#128274;</div>
+    <h3>CAPTURE FILE IS ENCRYPTED</h3>
+    <p>14N Intel has to figure out who the attacker is first. When they crack it they'll have an
+    unlock code for you. Go ask them for it.</p>
+    <div class="row" style="justify-content:center">
+      <input type="text" id="cyber-lock" placeholder="unlock code from 14N" style="max-width:220px">
+      <button class="pri" onclick="unlock('cyber')">UNLOCK</button>
+    </div>
+    <div class="result" id="cyber-lockres"></div>
+  </div>
+  <div class="deskbody">
   <div class="card">
     <p>We caught a message going across the network but it's encoded twice. Use the terminal below
     to decode it. Start by typing <kbd>help</kbd> to see what commands you have.</p>
     <div class="term" id="term">i5-shell v1.3 | type 'help' to start</div>
-    <div class="term-line"><span>$</span><input id="cmd" autocomplete="off"
+    <div class="term-line"><span>$</span><input id="cmd" autocomplete="off" autocapitalize="off"
       onkeydown="if(event.key==='Enter')runCmd()"></div>
   </div>
   <div class="card">
@@ -206,6 +296,7 @@
     <div class="hint" id="cyber-hint">Read the readme first. You'll need to open the capture file,
     then run the two decode commands in the right order.</div>
   </div>
+  </div>
   <div class="card ussf">
     <h3>IN THE SPACE FORCE</h3>
     <p>17S Cyber officers defend the networks and ground stations that talk to our satellites. If someone
@@ -214,9 +305,10 @@
   </div>
 </section>
 
-<!-- ================= 62E ENG ================= -->
+<!-- 62E ENG -->
 <section class="page" id="eng">
   <h2>62E // ENGINEERING</h2>
+  <div class="deskbody">
   <div class="card">
     <p>We pulled a circuit board off their gear and there's a resistor on it with 4 color bands.
     Read the colors left to right and turn each one into a number using the chart.
@@ -245,6 +337,7 @@
     <div class="hint" id="eng-hint">An AND gate only outputs 1 when both inputs are 1.
     For the colors, the brown band is the last one.</div>
   </div>
+  </div>
   <div class="card ussf">
     <h3>IN THE SPACE FORCE</h3>
     <p>62E Engineers design, test and fix the hardware that goes to space and the systems that run it.
@@ -253,13 +346,25 @@
   </div>
 </section>
 
-<!-- ================= 13S SPACE ================= -->
+<!-- 13S SPACE -->
 <section class="page" id="space">
   <h2>13S // SPACE OPS</h2>
+  <div class="card lockcard">
+    <div class="ico">&#128274;</div>
+    <h3>NO FIX YET</h3>
+    <p>Our satellite can't lock onto the signal until you feed it coordinates.
+    Get the <b>latitude from 17S Cyber</b> and the <b>longitude from 62E Engineering</b>.</p>
+    <div class="row" style="justify-content:center">
+      <input type="text" id="space-lock-lat" placeholder="latitude from 17S" style="max-width:200px">
+      <input type="text" id="space-lock-lon" placeholder="longitude from 62E" style="max-width:200px">
+      <button class="pri" onclick="unlock('space')">LOCK ON</button>
+    </div>
+    <div class="result" id="space-lockres"></div>
+  </div>
+  <div class="deskbody">
   <div class="card">
-    <p>Our satellite passed over the spot where the signal came from. You need the
-    <b>latitude from 17S</b> and the <b>longitude from 62E</b> to figure out which city it is,
-    so go bug them if they haven't sent it yet.</p>
+    <p>Fix acquired. Our satellite passed right over the spot. Match the coordinates you were given
+    to a city on the list.</p>
     <canvas id="track" width="640" height="300"></canvas>
   </div>
   <div class="card">
@@ -279,7 +384,8 @@
     </div>
     <div class="result" id="space-res"></div>
     <div class="hint" id="space-hint">The numbers have to match exactly. Also think about
-    which country the 14N desk said the group is from.</div>
+    which country 14N said the group is from.</div>
+  </div>
   </div>
   <div class="card ussf">
     <h3>IN THE SPACE FORCE</h3>
@@ -289,11 +395,23 @@
   </div>
 </section>
 
-<!-- ================= 63A ACQ ================= -->
+<!-- 63A ACQ -->
 <section class="page" id="acq">
   <h2>63A // ACQUISITIONS</h2>
+  <div class="card lockcard">
+    <div class="ico">&#128274;</div>
+    <h3>WHICH MANIFEST?</h3>
+    <p>We've got thousands of shipping manifests. They're filed by city. 13S Space is working out which
+    city the group is in. Get it from them.</p>
+    <div class="row" style="justify-content:center">
+      <input type="text" id="acq-lock" placeholder="city from 13S" style="max-width:220px">
+      <button class="pri" onclick="unlock('acq')">PULL FILE</button>
+    </div>
+    <div class="result" id="acq-lockres"></div>
+  </div>
+  <div class="deskbody">
   <div class="card">
-    <p>We got our hands on a shipping manifest from a fake company tied to the group.
+    <p>Found it. This manifest is from a fake company tied to the group.
     The export field is scrambled with a Caesar cipher (every letter got moved forward 3).
     Move each letter back 3 to read it. That word is your <b>KEY</b>.</p>
     <table>
@@ -312,6 +430,7 @@
     <div class="hint" id="acq-hint">It's a yellowish orange gem made from old tree resin.
     The Baltic area is famous for it.</div>
   </div>
+  </div>
   <div class="card ussf">
     <h3>IN THE SPACE FORCE</h3>
     <p>63A Acquisitions officers are the reason Guardians have gear at all. They run the programs that buy
@@ -320,14 +439,15 @@
   </div>
 </section>
 
-<!-- ================= FUSION ================= -->
+<!-- FUSION -->
 <section class="page" id="fusion">
   <h2>FUSION // PUT IT TOGETHER</h2>
   <div class="card">
-    <p>Get everyone back together and combine all five pieces into one answer:
+    <p>Get everyone together and say your pieces out loud. Then one person types the final answer:
     <code>i5{CITY-LATN-LONE-KEY}</code></p>
     <p class="muted">Example of the format (not the answer): <code>i5{SOMEPLACE-1234N-5678E-WORD}</code></p>
-    <div id="fusion-frags"></div>
+    <p>Pieces you found yourself:</p>
+    <div id="myPieces"></div>
     <div class="row" style="margin-top:12px">
       <input type="text" id="fusion-ans" placeholder="i5{...}">
       <button class="pri" onclick="check('fusion')">SUBMIT</button>
@@ -337,122 +457,385 @@
     <div class="hint" id="fusion-hint">City from 13S, latitude from 17S, longitude from 62E,
     key from 63A. Drop the decimals and put dashes between them.</div>
   </div>
-  <div class="card" id="win" style="display:none">
-    <h2 style="color:var(--accent)">YOU FOUND THEM</h2>
-    <p>SABLE BEAR is operating out of <b class="accent">KALININGRAD, RUSSIA (54.71N, 20.51E)</b>.
-    It's a small piece of Russia between Poland and Lithuania, which makes sense for a "Bear" group.
-    Good work everyone. This is exactly how a real task force works: intel, cyber, engineering, space ops and acquisitions all bringing one piece, and nobody solving it alone.</p>
-    <p class="muted">Hang tight, we're going to talk through it as a group.</p>
+  <div class="card">
+    <h3>TEAM FEED</h3>
+    <div class="feed" id="feed2"></div>
   </div>
 </section>
 
-<div class="foot">&#9733; Want to do this for real? Ask the det about Space Force career fields. &#9733;<br>i5 Space Group training exercise. The group and companies in here are made up. Not an official USSF product.</div>
+<div class="foot">&#9733; Want to do this for real? Ask the det about Space Force career fields. &#9733;<br>
+i5 Space Group training exercise. The group and companies in here are made up. Not an official USSF product.<br>
+<button onclick="leaveRoom()" style="margin-top:10px;font-size:11px">leave room</button></div>
 </main>
+</div>
 
-<script>
-/* ---------- obfuscated answers: char codes with +13 offset ---------- */
+<!-- WIN -->
+<div class="overlay" id="win">
+  <div class="card">
+    <h2 style="color:var(--accent);border:none;padding:0">TARGET FOUND</h2>
+    <p>SABLE BEAR is operating out of</p>
+    <p class="accent" style="font-size:22px;font-weight:bold">KALININGRAD, RUSSIA<br>54.71N, 20.51E</p>
+    <p>It's a small piece of Russia between Poland and Lithuania, which makes sense for a "Bear" group.</p>
+    <div class="bigtime" id="winTime">00:00</div>
+    <p class="muted" id="winBy"></p>
+    <p>This is how a real task force works: intel, cyber, engineering, space ops and acquisitions
+    each bringing one piece, and nobody solving it alone.</p>
+    <p class="muted">Hang tight, we're going to talk through it as a group.</p>
+    <div class="row" style="justify-content:center">
+      <button onclick="document.getElementById('win').classList.remove('show')">close</button>
+      <button class="pri" id="againBtn" onclick="newRound()" style="display:none">NEW ROUND</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+/* =====================================================================
+   PASTE YOUR FIREBASE CONFIG HERE. Leave as null for local test mode
+   (local mode only syncs between tabs in the same browser).
+   ===================================================================== */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDSLcTTtf1y5MhBbEFVxehYlRyR5l7xaXA",
+  authDomain: "i5-adversary-hunt.firebaseapp.com",
+  databaseURL: "https://i5-adversary-hunt-default-rtdb.firebaseio.com",
+  projectId: "i5-adversary-hunt",
+  storageBucket: "i5-adversary-hunt.firebasestorage.app",
+  messagingSenderId: "726619034846",
+  appId: "1:726619034846:web:2e3163ad219bfe7f81de4f"
+};
+
+/* ---------- small helpers ---------- */
+const $ = id => document.getElementById(id);
+const DESKS = ['intel','cyber','eng','space','acq'];
+const DESKNAME = {intel:'14N Intel',cyber:'17S Cyber',eng:'62E Engineering',space:'13S Space Ops',acq:'63A Acquisitions'};
+const DESKCODE = {intel:'14N',cyber:'17S',eng:'62E',space:'13S',acq:'63A'};
+const DESKBLURB = {intel:'find hidden text, ID the group',cyber:'decode a captured message',eng:'read a resistor + logic gate',space:'turn coordinates into a city',acq:'crack a shipping manifest'};
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function dec(a){return a.map(c=>String.fromCharCode(c-13)).join('');}
 function norm(s){return (s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');}
-const ANS = {
-  intel:[79,82,78,95],                                   // BEAR
-  cyber:[66,65,68,62,91],                                // 5471N
-  eng:[63,61,66,62,82],                                  // 2051E
-  space:[88,78,89,86,91,86,91,84,95,78,81],              // KALININGRAD
-  acq:[78,90,79,82,95]                                   // AMBER
-};
-const FUSION_TOKENS = [
-  [88,78,89,86,91,86,91,84,95,78,81],                    // KALININGRAD
-  [66,65,68,62],                                         // 5471
-  [63,61,66,62],                                         // 2051
-  [78,90,79,82,95]                                       // AMBER
-];
-const FRAGTOKEN = {
-  intel:"BEAR-NE", cyber:"LAT-5471N", eng:"LON-2051E",
-  space:"CITY-KALININGRAD", acq:"KEY-AMBER"
-};
-/* ---------- state ---------- */
-let FRAGS = {};
-try{ FRAGS = JSON.parse(localStorage.getItem('i5frags')||'{}'); }catch(e){ FRAGS={}; }
-function save(){ try{ localStorage.setItem('i5frags',JSON.stringify(FRAGS)); }catch(e){} }
+function fmt(ms){const n=Math.max(0,Math.floor(ms/1000));return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');}
+const ss = {get(k){try{return sessionStorage.getItem(k)}catch(e){return null}}, set(k,v){try{sessionStorage.setItem(k,v)}catch(e){}}, del(k){try{sessionStorage.removeItem(k)}catch(e){}}};
+const ls = {get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 
+/* ---------- answers (obfuscated, +13 char codes) ---------- */
+const ANS = {
+  intel:[79,82,78,95],                          // BEAR
+  cyber:[66,65,68,62,91],                       // 5471N
+  eng:[63,61,66,62,82],                         // 2051E
+  space:[88,78,89,86,91,86,91,84,95,78,81],     // KALININGRAD
+  acq:[78,90,79,82,95]                          // AMBER
+};
+const URSA = [98,95,96,78];                     // unlock code 14N gives 17S
+const FUSION_TOKENS = [ANS.space,[66,65,68,62],[63,61,66,62],ANS.acq];
+const PIECE = {intel:'BEAR (Russia)', cyber:'LAT 54.71N', eng:'LON 20.51E', space:'CITY KALININGRAD', acq:'KEY AMBER'};
+const YELL = {
+  intel:()=>'Go tell <b>17S Cyber</b> their unlock code: <b>'+dec(URSA)+'</b>',
+  cyber:()=>'Go tell <b>13S Space</b> the latitude: <b>54.71N</b>',
+  eng:()=>'Go tell <b>13S Space</b> the longitude: <b>20.51E</b>',
+  space:()=>'Go tell <b>63A Acquisitions</b> the city: <b>KALININGRAD</b>',
+  acq:()=>'Tell the whole team the key word: <b>AMBER</b>. Then head to FUSION.'
+};
+
+/* =====================================================================
+   BACKEND ADAPTERS
+   ===================================================================== */
+function makeLocal(){
+  const KEY='i5local'; let mem={};
+  const ch = ('BroadcastChannel' in window) ? new BroadcastChannel('i5local') : null;
+  const subs=[]; const leaving=[];
+  const load=()=>{const r=ls.get(KEY); if(r==null) return mem; try{return JSON.parse(r)}catch(e){return {}}};
+  const save=s=>{mem=s; ls.set(KEY,JSON.stringify(s)); if(ch) ch.postMessage(1); fire();};
+  const getAt=(s,p)=>p.split('/').reduce((o,k)=>o==null?undefined:o[k],s);
+  const setAt=(s,p,v)=>{const ks=p.split('/');let o=s;for(let i=0;i<ks.length-1;i++){if(typeof o[ks[i]]!=='object'||o[ks[i]]===null)o[ks[i]]={};o=o[ks[i]];}
+    const last=ks[ks.length-1]; if(v===null||v===undefined) delete o[last]; else o[last]=JSON.parse(JSON.stringify(v));};
+  function fire(){const s=load(); subs.forEach(x=>{const v=getAt(s,x.p); x.cb(v===undefined?null:JSON.parse(JSON.stringify(v)));});}
+  if(ch) ch.onmessage=fire;
+  window.addEventListener('storage',e=>{if(e.key===KEY) fire();});
+  window.addEventListener('beforeunload',()=>{if(!leaving.length)return;const s=load();leaving.forEach(p=>setAt(s,p,null));ls.set(KEY,JSON.stringify(s));if(ch)ch.postMessage(1);});
+  return {
+    mode:'local',
+    watch(p,cb){const x={p,cb};subs.push(x);const v=getAt(load(),p);cb(v===undefined?null:v);return()=>{const i=subs.indexOf(x);if(i>=0)subs.splice(i,1);};},
+    async get(p){const v=getAt(load(),p);return v===undefined?null:v;},
+    async set(p,v){const s=load();setAt(s,p,v);save(s);},
+    async update(p,o){const s=load();Object.keys(o).forEach(k=>setAt(s,p+'/'+k,o[k]));save(s);},
+    async push(p,v){const k=Date.now().toString(36)+Math.random().toString(36).slice(2,6);const s=load();setAt(s,p+'/'+k,v);save(s);},
+    async remove(p){const s=load();setAt(s,p,null);save(s);},
+    onDisconnectRemove(p){if(!leaving.includes(p))leaving.push(p);},
+    onConnected(cb){cb();},
+    now(){return Date.now();},
+    stamp(){return Date.now();}
+  };
+}
+
+async function makeFirebase(cfg){
+  const V='12.19.0';
+  const A=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+  const D=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-database.js`);
+  const db=D.getDatabase(A.initializeApp(cfg));
+  let offset=0; D.onValue(D.ref(db,'.info/serverTimeOffset'),s=>{offset=s.val()||0;});
+  const r=p=>D.ref(db,p);
+  return {
+    mode:'live',
+    watch(p,cb){return D.onValue(r(p),s=>cb(s.val()));},
+    async get(p){return (await D.get(r(p))).val();},
+    set(p,v){return D.set(r(p),v);},
+    update(p,o){return D.update(r(p),o);},
+    push(p,v){return D.push(r(p),v);},
+    remove(p){return D.remove(r(p));},
+    onDisconnectRemove(p){return D.onDisconnect(r(p)).remove();},
+    onConnected(cb){D.onValue(r('.info/connected'),s=>{if(s.val()===true)cb();});},
+    now(){return Date.now()+offset;},
+    stamp(){return D.serverTimestamp();}
+  };
+}
+
+/* =====================================================================
+   APP STATE
+   ===================================================================== */
+let B=null;
+const S = {pid:null,name:'',room:null,meta:null,players:{},solved:{},feed:{},myDesks:{},ready:false,unsubs:[],page:null,countdown:null};
+S.pid = ss.get('i5pid') || ('p'+Math.random().toString(36).slice(2,10));
+ss.set('i5pid',S.pid);
+
+const R = p => 'rooms/'+S.room+(p?'/'+p:'');
+function roundKey(){return 'i5:'+S.room+':'+(S.meta&&S.meta.startedAt||'x');}
+function local(){try{return JSON.parse(ls.get(roundKey())||'{}')}catch(e){return {}}}
+let LOCALMEM={};
+function getLocal(){const l=local();return Object.keys(l).length?l:(LOCALMEM[roundKey()]||{unlocked:{},solved:{}});}
+function setLocal(l){LOCALMEM[roundKey()]=l;ls.set(roundKey(),JSON.stringify(l));}
+function myState(){const l=getLocal();l.unlocked=l.unlocked||{};l.solved=l.solved||{};return l;}
+
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id));}
+
+/* ---------- join / create ---------- */
+function getName(){const n=$('nameIn').value.trim();if(!n){$('joinRes').innerHTML='<span class="bad">Pick a callsign first.</span>';return null;}return n.slice(0,16);}
+async function createRoom(){
+  const n=getName(); if(!n||!B) return;
+  const L='ABCDEFGHJKLMNPQRSTUVWXYZ'; let code='';
+  for(let t=0;t<8;t++){code='';for(let i=0;i<4;i++)code+=L[Math.floor(Math.random()*L.length)];
+    if(!(await B.get('rooms/'+code+'/meta'))) break;}
+  await B.set('rooms/'+code+'/meta',{host:S.pid,status:'lobby',created:B.stamp()});
+  enterRoom(code,n);
+}
+async function joinRoom(){
+  const n=getName(); if(!n||!B) return;
+  const code=norm($('codeIn').value).slice(0,4);
+  if(code.length!==4){$('joinRes').innerHTML='<span class="bad">Room codes are 4 letters.</span>';return;}
+  const m=await B.get('rooms/'+code+'/meta');
+  if(!m){$('joinRes').innerHTML='<span class="bad">No room with that code. Double check it.</span>';return;}
+  enterRoom(code,n);
+}
+function playerObj(){return {name:S.name,desks:S.myDesks,ready:S.ready,joinedAt:S.joinedAt||B.now()};}
+function writeMe(){if(!S.room)return;return B.set(R('players/'+S.pid),playerObj());}
+function enterRoom(code,name){
+  S.room=code; S.name=name;
+  const saved=JSON.parse(ss.get('i5sess')||'null');
+  S.ready=false;
+  if(saved&&saved.room===code){S.myDesks=saved.desks||{};S.joinedAt=saved.joinedAt;S.ready=!!saved.ready;}
+  if(!S.joinedAt) S.joinedAt=B.now();
+  saveSess();
+  B.onConnected(()=>{writeMe();B.onDisconnectRemove(R('players/'+S.pid));});
+  S.unsubs.push(B.watch(R('meta'),v=>{S.meta=v;render();}));
+  S.unsubs.push(B.watch(R('players'),v=>{S.players=v||{};const me=S.players[S.pid];if(me&&!!me.ready!==S.ready){S.ready=!!me.ready;saveSess();}render();}));
+  S.unsubs.push(B.watch(R('solved'),v=>{S.solved=v||{};render();}));
+  S.unsubs.push(B.watch(R('feed'),v=>{S.feed=v||{};renderFeed();}));
+}
+function saveSess(){ss.set('i5sess',JSON.stringify({room:S.room,name:S.name,desks:S.myDesks,joinedAt:S.joinedAt,ready:S.ready}));}
+async function leaveRoom(){
+  if(S.room){await B.remove(R('players/'+S.pid));}
+  ss.del('i5sess'); location.reload();
+}
+
+/* ---------- lobby ---------- */
+function hostId(){
+  const ps=S.players; if(S.meta&&ps[S.meta.host]) return S.meta.host;
+  const ids=Object.keys(ps).sort((a,b)=>(ps[a].joinedAt||0)-(ps[b].joinedAt||0));
+  return ids[0]||null;
+}
+function coverage(){const c={};DESKS.forEach(d=>c[d]=[]);Object.values(S.players).forEach(p=>{Object.keys(p.desks||{}).forEach(d=>{if(c[d]&&p.desks[d])c[d].push(p.name);});});return c;}
+function toggleDesk(d){
+  S.myDesks[d]=!S.myDesks[d]; if(!S.myDesks[d]) delete S.myDesks[d];
+  saveSess(); writeMe(); render();
+}
+function toggleReady(){
+  if(!Object.keys(S.myDesks).length){$('lobbyStatus').innerHTML='<span class="bad">Pick at least one desk first.</span>';return;}
+  S.ready=!S.ready; saveSess(); writeMe();
+}
+async function startGame(){
+  await B.update(R('meta'),{status:'playing',startedAt:B.stamp(),finished:null});
+  await B.push(R('feed'),{text:'Mission started. Good luck Guardians.',at:B.stamp()});
+}
+function forceStart(){
+  const cov=coverage(); const missing=DESKS.filter(d=>!cov[d].length);
+  if(missing.length){$('lobbyStatus').innerHTML='<span class="bad">Someone still has to take: '+missing.map(d=>DESKCODE[d]).join(', ')+'</span>';return;}
+  startGame();
+}
+function renderLobby(){
+  $('lobbyCode').textContent=S.room;
+  const late = S.meta && S.meta.status!=='lobby';
+  $('deskPick').innerHTML=DESKS.map(d=>`<label class="${S.myDesks[d]?'on':''}"><input type="checkbox" ${S.myDesks[d]?'checked':''} onchange="toggleDesk('${d}')"><span><b>${DESKCODE[d]}</b> ${esc(DESKNAME[d].split(' ').slice(1).join(' '))}<br><span class="muted" style="font-size:11px">${DESKBLURB[d]}</span></span></label>`).join('');
+  const cov=coverage();
+  $('coverage').innerHTML=DESKS.map(d=>cov[d].length?`<span class="good">&#10003; ${DESKCODE[d]}</span>`:`<span class="bad">&#10007; ${DESKCODE[d]}</span>`).join('');
+  const ps=S.players, ids=Object.keys(ps).sort((a,b)=>(ps[a].joinedAt||0)-(ps[b].joinedAt||0));
+  const h=hostId();
+  $('plist').innerHTML=ids.map(id=>{const p=ps[id];const ds=Object.keys(p.desks||{}).filter(d=>p.desks[d]);
+    return `<li><span>${id===h?'&#9733; ':''}<b>${esc(p.name)}</b>${id===S.pid?' <span class="muted">(you)</span>':''}<br>${ds.map(d=>`<span class="chip">${DESKCODE[d]}</span>`).join('')||'<span class="muted" style="font-size:11px">no desk yet</span>'}</span>
+    <span class="${p.ready?'rdy':'notrdy'}">${p.ready?'READY':'not ready'}</span></li>`;}).join('');
+  const btn=$('readyBtn');
+  if(late){btn.textContent='JUMP IN';btn.onclick=()=>{if(!Object.keys(S.myDesks).length){$('lobbyStatus').innerHTML='<span class="bad">Pick at least one desk first.</span>';return;}S.ready=true;saveSess();writeMe();render();};}
+  else{btn.textContent=S.ready?'NOT READY':'READY';btn.onclick=toggleReady;btn.classList.toggle('pri',!S.ready);}
+  $('soloBtn').style.display=(h===S.pid&&!late)?'inline-block':'none';
+  const missing=DESKS.filter(d=>!cov[d].length);
+  const waiting=ids.filter(id=>!ps[id].ready).length;
+  let msg='';
+  if(late) msg='<span class="accent">The mission already started. Pick your desk and jump in.</span>';
+  else if(missing.length) msg='<span class="muted">Still need someone on: '+missing.map(d=>DESKCODE[d]).join(', ')+'</span>';
+  else if(waiting) msg='<span class="muted">Waiting on '+waiting+' '+(waiting===1?'person':'people')+' to ready up.</span>';
+  else msg='<span class="good">Everyone\'s ready. Launching...</span>';
+  $('lobbyStatus').innerHTML=msg;
+  // host auto-starts when everyone is ready and all desks are covered
+  const go = !late && !missing.length && !waiting && ids.length>0;
+  if(go && h===S.pid && !S.countdown){S.countdown=setTimeout(()=>{S.countdown=null;
+      const c2=coverage();const ok=DESKS.every(d=>c2[d].length)&&Object.values(S.players).every(p=>p.ready);
+      if(ok&&S.meta&&S.meta.status==='lobby') startGame();},2500);}
+  if(!go && S.countdown){clearTimeout(S.countdown);S.countdown=null;}
+}
+
+/* ---------- game ---------- */
+function canSee(d){return !!S.myDesks[d];}
+function renderGame(){
+  const st=myState();
+  document.querySelectorAll('.tab').forEach(t=>{const p=t.dataset.p;
+    const vis = p==='brief'||p==='fusion'||canSee(p);
+    t.style.display=vis?'':'none';
+    t.classList.toggle('done',!!st.solved[p]);
+    t.classList.toggle('active',p===S.page);});
+  ['cyber','space','acq'].forEach(d=>{const sec=$(d);const un=!!st.unlocked[d];
+    sec.querySelector('.lockcard').style.display=un?'none':'block';
+    sec.querySelector('.deskbody').style.display=un?'block':'none';});
+  DESKS.forEach(d=>{if(st.solved[d]&&!$(d+'-res').innerHTML) showSolved(d);});
+  // roster
+  const ps=S.players;
+  $('rosterTable').innerHTML='<tr><th>Desk</th><th>People</th><th>Status</th></tr>'+DESKS.map(d=>{
+    const names=Object.values(ps).filter(p=>p.desks&&p.desks[d]).map(p=>esc(p.name)).join(', ')||'<span class="bad">nobody</span>';
+    return `<tr><td>${DESKCODE[d]}</td><td>${names}</td><td>${S.solved[d]?'<span class="good">cracked</span>':'<span class="muted">working</span>'}</td></tr>`;}).join('');
+  const mine=DESKS.filter(d=>st.solved[d]);
+  $('myPieces').innerHTML=mine.length?mine.map(d=>`<span class="frag">${DESKCODE[d]}: ${PIECE[d]}</span>`).join(''):'<span class="muted">None yet. You\'ll need to get pieces from your teammates anyway.</span>';
+  $('prog').textContent='DESKS CRACKED '+Object.keys(S.solved||{}).length+'/5';
+  if(!S.page) go(DESKS.find(canSee)||'brief');
+  // win
+  const f=S.meta&&S.meta.finished;
+  if(f && !S.winShown){S.winShown=true;
+    $('winTime').textContent=fmt((f.at||0)-(S.meta.startedAt||0));
+    $('winBy').textContent='Final answer submitted by '+(f.name||'someone');
+    $('againBtn').style.display=hostId()===S.pid?'inline-block':'none';
+    $('win').classList.add('show');}
+  if(!f){S.winShown=false;$('win').classList.remove('show');}
+}
+function renderFeed(){
+  const items=Object.values(S.feed||{}).sort((a,b)=>(b.at||0)-(a.at||0));
+  const h=items.length?items.map(i=>`<div><span class="muted">${S.meta&&S.meta.startedAt&&i.at?fmt(i.at-S.meta.startedAt):''}</span> ${esc(i.text)}</div>`).join(''):'<div class="muted">Nothing yet.</div>';
+  $('feed1').innerHTML=h;$('feed2').innerHTML=h;
+}
+function render(){
+  if(!S.room){show('screen-join');return;}
+  if(!S.meta){return;}
+  $('hud').style.display='flex'; $('hudRoom').textContent='ROOM '+S.room;
+  const playing=S.meta.status!=='lobby';
+  const me=S.players[S.pid];
+  if(!playing || !Object.keys(S.myDesks).length || !(me&&me.ready)){
+    if(!playing){S.page=null;}
+    show('screen-lobby'); renderLobby(); return;
+  }
+  show('screen-game'); renderGame(); renderFeed();
+}
 function go(p){
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.getElementById(p).classList.add('active');
+  S.page=p;
+  document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===p));
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.p===p));
   if(p==='intel') drawStego();
   if(p==='eng') drawResistor();
   if(p==='space') drawTrack();
-  if(p==='fusion') renderFusion();
   window.scrollTo(0,0);
 }
-function check(id){
-  const res=document.getElementById(id+'-res');
-  const val=norm(document.getElementById(id+'-ans').value);
+
+/* ---------- unlocks (codes said out loud) ---------- */
+function unlock(d){
+  const res=$(d+'-lockres'); let ok=false;
+  if(d==='cyber') ok = norm($('cyber-lock').value)===dec(URSA);
+  if(d==='space') ok = norm($('space-lock-lat').value)===dec(ANS.cyber) && norm($('space-lock-lon').value)===dec(ANS.eng);
+  if(d==='acq') ok = norm($('acq-lock').value)===dec(ANS.space);
+  if(!ok){res.innerHTML='<span class="bad">That\'s not it. Make sure you got it right from your teammate.</span>';return;}
+  const st=myState(); st.unlocked[d]=true; setLocal(st);
+  B.push(R('feed'),{text:S.name+' unlocked '+DESKCODE[d],at:B.stamp()});
+  renderGame(); go(d);
+}
+
+/* ---------- answer checks ---------- */
+function showSolved(d){
+  $(d+'-res').innerHTML='<span class="good">Got it! Your piece: '+PIECE[d]+'</span><div class="yell">&#128226; '+YELL[d]()+'</div>';
+}
+async function check(id){
+  const res=$(id+'-res');
+  const val=norm($(id+'-ans').value);
   if(id==='fusion'){
-    const have=Object.keys(FRAGS).length===5;
-    const all=FUSION_TOKENS.every(t=>val.includes(norm(dec(t))));
-    if(!have){res.innerHTML='<span class="bad">You still need all 5 pieces first.</span>';return;}
-    if(all){res.innerHTML='<span class="good">That&#39;s it!</span>';
-      document.getElementById('win').style.display='block';}
-    else res.innerHTML='<span class="bad">Not quite. Double check each piece and the format.</span>';
+    const n=Object.keys(S.solved||{}).length;
+    if(n<5){res.innerHTML='<span class="bad">Not every desk has cracked their puzzle yet ('+n+'/5).</span>';return;}
+    if(FUSION_TOKENS.every(t=>val.includes(dec(t)))){
+      res.innerHTML='<span class="good">That\'s it!</span>';
+      if(!(S.meta&&S.meta.finished)){
+        await B.update(R('meta'),{status:'done',finished:{name:S.name,at:B.stamp()}});
+        B.push(R('feed'),{text:S.name+' submitted the final answer. TARGET FOUND.',at:B.stamp()});
+      }
+    } else res.innerHTML='<span class="bad">Not quite. Double check each piece and the format.</span>';
     return;
   }
-  if(val===norm(dec(ANS[id]))){
-    FRAGS[id]=FRAGTOKEN[id]; save(); updateFrags();
-    res.innerHTML='<span class="good">Got it! Your piece: '+FRAGTOKEN[id]+'</span>';
-  } else {
-    res.innerHTML='<span class="bad">Nope, try again.</span>';
-  }
+  if(val===dec(ANS[id])){
+    const st=myState(); const first=!st.solved[id]; st.solved[id]=true; setLocal(st);
+    showSolved(id);
+    if(!S.solved[id]){
+      await B.set(R('solved/'+id),{name:S.name,at:B.stamp()});
+      B.push(R('feed'),{text:S.name+' cracked '+DESKCODE[id]+'. Go get the info from them!',at:B.stamp()});
+    }
+    if(first) renderGame();
+  } else res.innerHTML='<span class="bad">Nope, try again.</span>';
 }
-function hint(id){const h=document.getElementById(id+'-hint');h.style.display='block';}
-function updateFrags(){
-  ['intel','cyber','eng','space','acq'].forEach(k=>{
-    const el=document.getElementById('f-'+k);
-    const code={intel:'14N',cyber:'17S',eng:'62E',space:'13S',acq:'63A'}[k];
-    if(FRAGS[k]){el.textContent=code+' '+FRAGS[k];el.classList.remove('locked');}
-    else{el.textContent=code+' ???';el.classList.add('locked');}
-  });
-  document.getElementById('prog').textContent='PIECES '+Object.keys(FRAGS).length+'/5';
+function hint(id){$(id+'-hint').style.display='block';}
+
+/* ---------- new round (host) ---------- */
+async function newRound(){
+  await B.remove(R('solved')); await B.remove(R('feed'));
+  const up={}; Object.keys(S.players).forEach(id=>{up['players/'+id+'/ready']=false;});
+  up['meta/status']='lobby'; up['meta/startedAt']=null; up['meta/finished']=null;
+  await B.update(R(''),up);
+  S.ready=false; S.page=null; saveSess();
+  ['cyber-lock','space-lock-lat','space-lock-lon','acq-lock'].forEach(i=>$(i).value='');
+  DESKS.concat('fusion').forEach(d=>{$(d+'-res').innerHTML='';$(d+'-ans').value='';});
+  ['cyber','space','acq'].forEach(d=>$(d+'-lockres').innerHTML='');
 }
-function renderFusion(){
-  const box=document.getElementById('fusion-frags');
-  box.innerHTML = Object.keys(FRAGS).length
-    ? Object.keys(FRAGS).map(k=>'<span class="frag">'+FRAGS[k]+'</span>').join('')
-    : '<span class="muted">No pieces yet. Go work the desks.</span>';
-}
+
 /* ---------- 14N stego ---------- */
 function drawStego(){
-  const c=document.getElementById('stego'),x=c.getContext('2d');
+  const c=$('stego'),x=c.getContext('2d');
   x.fillStyle='#000';x.fillRect(0,0,c.width,c.height);
-  // faint noise
-  for(let i=0;i<1600;i++){x.fillStyle='rgba(255,255,255,0.015)';
-    x.fillRect(Math.random()*c.width,Math.random()*c.height,1,1);}
-  x.fillStyle='rgba(255,255,255,0.045)'; // very low-contrast hidden text
-  x.font='bold 26px Courier New';
-  x.fillText('TTP: SPEAR-PHISHING + SOCIAL ENG',24,70);
-  x.font='bold 22px Courier New';
-  x.fillText('HEMISPHERE: N  /  E',24,120);
-  x.font='16px Courier New';
-  x.fillText('MATCH THE CRYPTONYM ANIMAL',24,160);
+  for(let i=0;i<1600;i++){x.fillStyle='rgba(255,255,255,0.015)';x.fillRect(Math.random()*c.width,Math.random()*c.height,1,1);}
+  x.fillStyle='rgba(255,255,255,0.045)';
+  x.font='bold 26px Courier New'; x.fillText('TTP: SPEAR-PHISHING + SOCIAL ENG',24,70);
+  x.font='bold 22px Courier New'; x.fillText('HEMISPHERE: N  /  E',24,120);
+  x.font='16px Courier New'; x.fillText('MATCH THE CRYPTONYM ANIMAL',24,160);
 }
-function stegoFilter(){
-  const b=document.getElementById('bright').value;
-  const i=document.getElementById('inv').value;
-  document.getElementById('stego').style.filter='brightness('+b+') invert('+(i/100)+')';
-}
+function stegoFilter(){$('stego').style.filter='brightness('+$('bright').value+') invert('+($('inv').value/100)+')';}
+
 /* ---------- 17S terminal ---------- */
 const LAT = dec([89,78,97,86,97,98,81,82,45,66,65,59,68,62,45,91]); // "LATITUDE 54.71 N"
-function rot13(s){return s.replace(/[a-z]/gi,c=>{
-  const b=c<='Z'?65:97;return String.fromCharCode((c.charCodeAt(0)-b+13)%26+b);});}
-const WIRE = btoa(rot13(LAT)); // live, decodes correctly
+function rot13(s){return s.replace(/[a-z]/gi,c=>{const b=c<='Z'?65:97;return String.fromCharCode((c.charCodeAt(0)-b+13)%26+b);});}
+const WIRE = btoa(rot13(LAT));
 let lastOut='';
-function termPrint(t,cls){const d=document.getElementById('term');
-  d.innerHTML+='\n'+(cls?'<span class="'+cls+'">'+t+'</span>':t);d.scrollTop=d.scrollHeight;}
+function termPrint(t,cls){const d=$('term');d.innerHTML+='\n'+(cls?'<span class="'+cls+'">'+esc(t)+'</span>':esc(t));d.scrollTop=d.scrollHeight;}
 function runCmd(){
-  const i=document.getElementById('cmd');const raw=i.value.trim();i.value='';
+  const i=$('cmd');const raw=i.value.trim();i.value='';
   if(!raw)return; termPrint('$ '+raw,'in');
   const cmd=raw.toLowerCase();
-  if(cmd==='help'){termPrint("commands: ls | cat capture.b64 | b64 -d | rot13 | clear");}
+  if(cmd==='help'){termPrint("commands: ls | cat <file> | b64 -d | rot13 | clear");}
   else if(cmd==='ls'){termPrint("capture.b64   readme.txt");}
   else if(cmd==='cat readme.txt'){termPrint("The message was put through ROT13, then Base64. Undo them in reverse order.");}
   else if(cmd==='cat capture.b64'){lastOut=WIRE;termPrint(WIRE);}
@@ -462,49 +845,58 @@ function runCmd(){
   else if(cmd==='rot13'||cmd==='decode rot13'){
     if(lastOut===atob(WIRE)){lastOut=rot13(lastOut);termPrint(lastOut,'in');}
     else termPrint("do the base64 step first ('b64 -d')");}
-  else if(cmd==='clear'){document.getElementById('term').innerHTML="i5-shell v1.3 | type 'help' to start";}
+  else if(cmd==='clear'){$('term').innerHTML="i5-shell v1.3 | type 'help' to start";}
   else termPrint("unknown command: "+raw);
 }
+
 /* ---------- 62E resistor ---------- */
 function drawResistor(){
-  const s=document.getElementById('res');
-  const bands=['#d23','#111','#2a2','#a63']; // red, black, green, brown => 2,0,5,1
+  const bands=['#d23','#111','#2a2','#a63']; // red black green brown
   let b='';bands.forEach((c,k)=>{b+='<rect x="'+(120+k*45)+'" y="25" width="18" height="70" fill="'+c+'"/>';});
-  s.innerHTML=
-    '<line x1="10" y1="60" x2="400" y2="60" stroke="#999" stroke-width="4"/>'+
-    '<rect x="100" y="30" width="210" height="60" rx="22" fill="#c9b27e"/>'+b;
+  $('res').innerHTML='<line x1="10" y1="60" x2="400" y2="60" stroke="#999" stroke-width="4"/><rect x="100" y="30" width="210" height="60" rx="22" fill="#c9b27e"/>'+b;
 }
+
 /* ---------- 13S ground track ---------- */
 function drawTrack(){
-  const c=document.getElementById('track'),x=c.getContext('2d');
+  const c=$('track'),x=c.getContext('2d');
   x.fillStyle='#02121a';x.fillRect(0,0,c.width,c.height);
-  x.strokeStyle='#123';for(let i=0;i<=c.width;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,c.height);x.stroke();}
+  x.strokeStyle='#123';x.lineWidth=1;
+  for(let i=0;i<=c.width;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,c.height);x.stroke();}
   for(let j=0;j<=c.height;j+=40){x.beginPath();x.moveTo(0,j);x.lineTo(c.width,j);x.stroke();}
-  // sinusoidal ground track
   x.strokeStyle='#9fef00';x.lineWidth=2;x.beginPath();
   for(let px=0;px<=c.width;px++){const py=150+90*Math.sin(px/70);if(px===0)x.moveTo(px,py);else x.lineTo(px,py);}
   x.stroke();
-  // three range rings
-  const stations=[[180,110],[430,180],[300,240]];
   x.strokeStyle='#00e5a0';x.setLineDash([4,4]);
-  stations.forEach(s=>{x.beginPath();x.arc(s[0],s[1],95,0,7);x.stroke();
-    x.fillStyle='#00e5a0';x.fillRect(s[0]-3,s[1]-3,6,6);});
+  [[180,110],[430,180],[300,240]].forEach(s=>{x.beginPath();x.arc(s[0],s[1],95,0,7);x.stroke();x.fillStyle='#00e5a0';x.fillRect(s[0]-3,s[1]-3,6,6);});
   x.setLineDash([]);
-  // fix marker
   x.fillStyle='#ff5c5c';x.beginPath();x.arc(305,170,6,0,7);x.fill();
-  x.fillStyle='#fff';x.font='13px Courier New';x.fillText('FIX: use 17S lat + 62E lon',330,165);
+  x.fillStyle='#fff';x.font='13px Courier New';x.fillText('FIX: 54.71N 20.51E',330,165);
 }
-/* ---------- init ---------- */
-updateFrags();
+
 /* ---------- timer ---------- */
-let t=0,ti=null;
-function fmt(n){return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');}
-function toggleTimer(){
-  const b=document.getElementById('tbtn');
-  if(ti){clearInterval(ti);ti=null;b.textContent='▶ resume';}
-  else{ti=setInterval(()=>{t++;document.getElementById('timer').textContent=fmt(t);},1000);
-    b.textContent='⏸ pause';}
-}
+setInterval(()=>{
+  if(!S.meta||!S.meta.startedAt||!B) {$('timer').textContent='00:00';return;}
+  const end = S.meta.finished&&S.meta.finished.at ? S.meta.finished.at : B.now();
+  $('timer').textContent=fmt(end-S.meta.startedAt);
+},500);
+
+/* ---------- expose to inline handlers ---------- */
+Object.assign(window,{createRoom,joinRoom,toggleDesk,toggleReady,forceStart,leaveRoom,go,unlock,check,hint,newRound,stegoFilter,runCmd});
+
+/* ---------- boot ---------- */
+(async()=>{
+  try{ B = FIREBASE_CONFIG ? await makeFirebase(FIREBASE_CONFIG) : makeLocal(); }
+  catch(e){ console.error(e); B = makeLocal(); $('modeBanner').textContent='Could not reach the live server. Running in local test mode.'; $('modeBanner').style.display='block'; }
+  if(B.mode==='local' && !$('modeBanner').textContent){$('modeBanner').textContent='LOCAL TEST MODE: rooms only work between tabs in this browser.';$('modeBanner').style.display='block';}
+  const sess=JSON.parse(ss.get('i5sess')||'null');
+  if(sess&&sess.room){$('nameIn').value=sess.name;
+    const m=await B.get('rooms/'+sess.room+'/meta');
+    if(m){enterRoom(sess.room,sess.name);return;}
+    ss.del('i5sess');}
+  const saved=ls.get('i5name'); if(saved) $('nameIn').value=saved;
+  $('nameIn').addEventListener('change',()=>ls.set('i5name',$('nameIn').value.trim()));
+  render();
+})();
 </script>
 </body>
 </html>
