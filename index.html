@@ -309,8 +309,27 @@
 <section class="page" id="eng">
   <h2>62E // ENGINEERING</h2>
   <div class="deskbody">
+  <div class="card" id="eng-power">
+    <h3 style="margin-top:0">STEP 1: POWER UP THE BOARD</h3>
+    <p>We pulled a circuit board off their gear but it's dead. To bring it back up safely we need to know
+    how fast its timing circuit charges. Find the <b>time constant</b> (&tau;) of this RL circuit in
+    <b>seconds</b>.</p>
+    <svg id="rl" viewBox="0 0 640 300" width="640" height="300"></svg>
+    <p class="muted">Scientific notation works, like <code>5x10^-3</code> or <code>5e-3</code>. You can also add units, like <code>5ms</code>.</p>
+    <div class="row">
+      <input type="text" id="tau-ans" placeholder="time constant">
+      <button class="pri" onclick="checkTau()">POWER UP</button>
+      <button onclick="hint('tau')">hint</button>
+    </div>
+    <div class="result" id="tau-res"></div>
+    <div class="hint" id="tau-hint">&tau; = L<sub>eq</sub> / R<sub>eq</sub>. Squash the resistors into one R<sub>eq</sub> and the
+    inductors into one L<sub>eq</sub>. Do the parallel parts first, then add the series part.
+    Parallel: (A &times; B) / (A + B). Series: just add them. Watch your units (kilo = 10<sup>3</sup>, milli = 10<sup>-3</sup>).</div>
+  </div>
+  <div id="eng-board">
   <div class="card">
-    <p>We pulled a circuit board off their gear and there's a resistor on it with 4 color bands.
+    <h3 style="margin-top:0">STEP 2: READ THE BOARD</h3>
+    <p>It's on. There's a resistor on the board with 4 color bands.
     Read the colors left to right and turn each one into a number using the chart.
     Those 4 numbers are the <b>longitude</b> (put a decimal after the first two).</p>
     <svg id="res" viewBox="0 0 420 120" width="420" height="120"></svg>
@@ -336,6 +355,7 @@
     <div class="result" id="eng-res"></div>
     <div class="hint" id="eng-hint">An AND gate only outputs 1 when both inputs are 1.
     For the colors, the brown band is the last one.</div>
+  </div>
   </div>
   </div>
   <div class="card ussf">
@@ -712,6 +732,8 @@ function renderGame(){
   ['cyber','space','acq'].forEach(d=>{const sec=$(d);const un=!!st.unlocked[d];
     sec.querySelector('.lockcard').style.display=un?'none':'block';
     sec.querySelector('.deskbody').style.display=un?'block':'none';});
+  {const pw=!!st.unlocked.engpower; $('eng-board').style.display=pw?'block':'none';
+   if(pw&&!$('tau-res').innerHTML) $('tau-res').innerHTML='<span class="good">Board powered up. &tau; = 1&times;10<sup>-4</sup> s (0.1 ms)</span>';}
   DESKS.forEach(d=>{if(st.solved[d]&&!$(d+'-res').innerHTML) showSolved(d);});
   // roster
   const ps=S.players;
@@ -753,7 +775,7 @@ function go(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===p));
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.p===p));
   if(p==='intel') drawStego();
-  if(p==='eng') drawResistor();
+  if(p==='eng'){ drawResistor(); drawRL(); }
   if(p==='space') drawTrack();
   window.scrollTo(0,0);
 }
@@ -811,6 +833,7 @@ async function newRound(){
   ['cyber-lock','space-lock-lat','space-lock-lon','acq-lock'].forEach(i=>$(i).value='');
   DESKS.concat('fusion').forEach(d=>{$(d+'-res').innerHTML='';$(d+'-ans').value='';});
   ['cyber','space','acq'].forEach(d=>$(d+'-lockres').innerHTML='');
+  $('tau-ans').value=''; $('tau-res').innerHTML='';
 }
 
 /* ---------- 14N stego ---------- */
@@ -849,6 +872,52 @@ function runCmd(){
   else termPrint("unknown command: "+raw);
 }
 
+/* ---------- 62E RL time constant ---------- */
+function parseSeconds(raw){
+  let t=String(raw||'').toLowerCase().replace(/\s+/g,'').replace(/[×*]/g,'x').replace(/µ|μ/g,'u').replace(/−/g,'-');
+  let mult=1;
+  const units=[['seconds',1],['second',1],['sec',1],['ms',1e-3],['us',1e-6],['ns',1e-9],['s',1]];
+  for(const [u,m] of units){ if(t.endsWith(u)){ t=t.slice(0,-u.length); mult=m; break; } }
+  t=t.replace(/x10\^?\(?(-?\d+)\)?$/,'e$1').replace(/^10\^\(?(-?\d+)\)?$/,'1e$1');
+  if(!/^-?\d*\.?\d+(e-?\d+)?$/.test(t)) return NaN;
+  return parseFloat(t)*mult;
+}
+const TAU = 1e-4; // Leq = 100mH + (300mH||600mH) = 300mH ; Req = 1k + (3k||6k) = 3k ; tau = 0.3/3000
+function checkTau(){
+  const v=parseSeconds($('tau-ans').value), res=$('tau-res');
+  if(isNaN(v)){res.innerHTML='<span class="bad">Couldn\'t read that number. Try something like 5x10^-3.</span>';return;}
+  if(Math.abs(v-TAU)/TAU<0.02){
+    const st=myState(); st.unlocked.engpower=true; setLocal(st);
+    res.innerHTML='<span class="good">Board powered up. &tau; = 1&times;10<sup>-4</sup> s (0.1 ms)</span>';
+    if(B&&S.room) B.push(R('feed'),{text:S.name+' powered up the 62E board',at:B.stamp()});
+    renderGame();
+  } else res.innerHTML='<span class="bad">Board won\'t power up. Recheck your L<sub>eq</sub> and R<sub>eq</sub>.</span>';
+}
+function drawRL(){
+  const W='#c6d0d8', C='#9fef00';
+  const line=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${W}" stroke-width="2"/>`;
+  const zig=(x1,x2,y)=>{let d=`M${x1},${y}`;const n=8,w=(x2-x1)/n;for(let i=0;i<n;i++)d+=` L${x1+w*(i+.5)},${y+(i%2?10:-10)}`;d+=` L${x2},${y}`;return `<path d="${d}" fill="none" stroke="${C}" stroke-width="2.5"/>`;};
+  const coil=(x1,x2,y)=>{const n=4,w=(x2-x1)/n;let d=`M${x1},${y}`;for(let i=0;i<n;i++)d+=` a${w/2},${w/2} 0 0 1 ${w},0`;return `<path d="${d}" fill="none" stroke="${C}" stroke-width="2.5"/>`;};
+  const lbl=(x,y,t)=>`<text x="${x}" y="${y}" fill="#fff" font-family="Courier New" font-size="15" text-anchor="middle">${t}</text>`;
+  const dot=(x,y)=>`<circle cx="${x}" cy="${y}" r="3.5" fill="${W}"/>`;
+  let g='';
+  // top: R1 then (R2 || R3)
+  g+=line(40,70,90,70)+zig(90,170,70)+lbl(130,50,'1 k&Omega;')+line(170,70,240,70);
+  g+=line(240,35,240,105)+line(400,35,400,105);
+  g+=line(240,35,280,35)+zig(280,360,35)+line(360,35,400,35)+lbl(320,20,'3 k&Omega;');
+  g+=line(240,105,280,105)+zig(280,360,105)+line(360,105,400,105)+lbl(320,132,'6 k&Omega;');
+  g+=line(400,70,600,70)+dot(240,70)+dot(400,70);
+  // sides
+  g+=line(40,70,40,230)+line(600,70,600,230);
+  // bottom: L1 then (L2 || L3)
+  g+=line(600,230,550,230)+coil(470,550,230)+lbl(510,265,'100 mH')+line(400,230,470,230);
+  g+=line(400,195,400,265)+line(240,195,240,265);
+  g+=line(360,195,400,195)+coil(280,360,195)+line(240,195,280,195)+lbl(320,180,'300 mH');
+  g+=line(360,265,400,265)+coil(280,360,265)+line(240,265,280,265)+lbl(320,292,'600 mH');
+  g+=line(40,230,240,230)+dot(240,230)+dot(400,230);
+  $('rl').innerHTML=g;
+}
+
 /* ---------- 62E resistor ---------- */
 function drawResistor(){
   const bands=['#d23','#111','#2a2','#a63']; // red black green brown
@@ -881,7 +950,7 @@ setInterval(()=>{
 },500);
 
 /* ---------- expose to inline handlers ---------- */
-Object.assign(window,{createRoom,joinRoom,toggleDesk,toggleReady,forceStart,leaveRoom,go,unlock,check,hint,newRound,stegoFilter,runCmd});
+Object.assign(window,{checkTau,createRoom,joinRoom,toggleDesk,toggleReady,forceStart,leaveRoom,go,unlock,check,hint,newRound,stegoFilter,runCmd});
 
 /* ---------- boot ---------- */
 (async()=>{
